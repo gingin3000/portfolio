@@ -25,6 +25,9 @@ document.documentElement.setAttribute('data-theme', 'dark'); // or 'light'
 **Living style guide:** open [`docs/index.html`](docs/index.html) in a browser to browse
 every token and component, and to see the theme cross-fade in action.
 
+**Content guidelines:** [`docs/content-guidelines.md`](docs/content-guidelines.md) covers
+how to *write* the copy that fills these components — see below.
+
 ## Architecture
 
 Tokens are layered so you theme by remapping, never by editing components.
@@ -105,6 +108,21 @@ different primitives (or add new primitives). Components never reference hex dir
 The staggered light/dark cross-fade is opt-in per toggle: add `class="theming"` to
 `<html>` on click, remove it ~2.25s later (see `base.css` and the docs page's script).
 It respects `prefers-reduced-motion`.
+
+## Content guidelines
+
+A design system covers how things look; the
+[**UX Content Guidelines**](docs/content-guidelines.md) cover how they read. It's the
+writing companion to the visual system — apply it to portfolio copy, case studies, and
+any public-facing UX content.
+
+- **Five core principles** — lead with the problem, be specific, write for mixed
+  audiences, explain the *why*, use positive framing
+- **Voice & tone** — direct and concise, no hedging, active voice
+- **Structure** — context before detail, liberal lists and subheadings
+- **Accessibility & cognitive load** — short paragraphs, explicit structure, clear
+  pronouns, acronyms defined every time
+- **Common pitfalls** table and a **pre-publication checklist**
 
 ## Provenance
 
