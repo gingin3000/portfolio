@@ -1,0 +1,39 @@
+/* ============================================================================
+   ICON — Material Symbols Rounded utility with size + fill variants.
+   Usage: <span class="ds-icon">arrow_forward</span>
+          <span class="ds-icon ds-icon--lg ds-icon--filled">check_circle</span>
+   ========================================================================== */
+
+.ds-icon {
+  font-family: var(--font-family-icon);
+  font-weight: normal;
+  font-style: normal;
+  font-size: var(--icon-size-md);
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+  font-variation-settings:
+    'FILL' var(--icon-fill),
+    'wght' var(--icon-weight),
+    'GRAD' var(--icon-grade),
+    'opsz' 24;
+}
+
+.ds-icon--filled { --icon-fill: 1; }
+.ds-icon--sm { font-size: var(--icon-size-sm); }
+.ds-icon--lg {
+  font-size: var(--icon-size-lg);
+  font-variation-settings: 'FILL' var(--icon-fill), 'wght' var(--icon-weight), 'GRAD' var(--icon-grade), 'opsz' 40;
+}
+.ds-icon--xl {
+  font-size: var(--icon-size-xl);
+  font-variation-settings: 'FILL' var(--icon-fill), 'wght' var(--icon-weight), 'GRAD' var(--icon-grade), 'opsz' 48;
+}

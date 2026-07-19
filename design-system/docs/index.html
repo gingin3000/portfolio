@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aurora Design System — Living Style Guide</title>
+<link rel="stylesheet" href="../design-system.css">
+<style>
+  /* Docs-only chrome (not part of the design system itself). */
+  .page { max-width: 1080px; margin: 0 auto; padding: 32px 40px 120px; position: relative; z-index: 1; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 28px 40px 8px; max-width: 1080px; margin: 0 auto; }
+  section { margin-top: 72px; scroll-margin-top: 24px; }
+  section > h2 { font: var(--type-heading-lg); color: var(--text-display); margin: 0 0 4px; }
+  section > .sub { font: var(--type-body-md); color: var(--text-secondary); margin: 0 0 28px; max-width: 640px; }
+  h3 { font: var(--type-heading-sm); color: var(--text-display); margin: 40px 0 16px; }
+
+  .grid { display: grid; gap: 16px; }
+  .cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+
+  /* Swatches */
+  .swatch { border: 1px solid var(--divider-default); border-radius: var(--radius-8); overflow: hidden; background: var(--surface-default); }
+  .swatch .chip-color { height: 68px; }
+  .swatch .meta { padding: 10px 12px; }
+  .swatch .name { font: var(--fw-medium) 13px var(--font-family); color: var(--text-primary); }
+  .swatch .val { font: var(--fw-regular) 11px/1.4 var(--font-family); color: var(--text-secondary); margin-top: 2px; word-break: break-all; }
+
+  .ramp { display: flex; border-radius: var(--radius-8); overflow: hidden; border: 1px solid var(--divider-default); }
+  .ramp > div { flex: 1; height: 56px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; font: var(--fw-medium) 10px var(--font-family); }
+
+  /* Foundation demos */
+  .space-demo { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .space-bar { height: 16px; background: var(--primary-main); border-radius: 3px; }
+  .space-demo .lbl { font: var(--fw-medium) 12px var(--font-family); color: var(--text-secondary); width: 84px; }
+
+  .radius-box { width: 96px; height: 72px; background: var(--primary-container); border: 1px solid var(--primary-border-subtle); display: flex; align-items: center; justify-content: center; font: var(--fw-medium) 12px var(--font-family); color: var(--primary-on-container); }
+  .elev-box { height: 84px; background: var(--surface-default); border-radius: var(--radius-12); display: flex; align-items: center; justify-content: center; font: var(--fw-medium) 12px var(--font-family); color: var(--text-secondary); }
+
+  .spec { font: var(--fw-regular) 12px var(--font-family); color: var(--text-disabled); margin-top: 4px; }
+  code.tok { font: 500 12px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--background-highlight); color: var(--text-primary); padding: 2px 6px; border-radius: 5px; }
+
+  @media (max-width: 720px) {
+    .cols-4 { grid-template-columns: repeat(2,1fr); }
+    .cols-3, .cols-2 { grid-template-columns: 1fr; }
+    .page, .topbar { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Ambient aurora, same treatment as the source portfolio -->
+<div class="ds-aurora" style="opacity:.5;position:fixed">
+  <div class="ds-blob" style="top:-120px;left:12%;width:460px;height:460px;background:radial-gradient(ellipse at center,var(--aurora-mint),transparent 65%);animation:auroraA 20s ease-in-out infinite"></div>
+  <div class="ds-blob" style="bottom:-160px;right:6%;width:540px;height:540px;background:radial-gradient(ellipse at center,var(--aurora-lav),transparent 65%);animation:auroraB 26s ease-in-out infinite"></div>
+</div>
+
+<div class="topbar">
+  <div>
+    <div class="ds-eyebrow">Living Style Guide</div>
+    <div class="ds-heading-md" style="margin-top:4px">Aurora Design System</div>
+  </div>
+  <nav class="ds-nav">
+    <span class="ds-nav__item is-active" onclick="jump('colour')">Colour</span>
+    <span class="ds-nav__item" onclick="jump('type')">Type</span>
+    <span class="ds-nav__item" onclick="jump('foundations')">Foundations</span>
+    <span class="ds-nav__item" onclick="jump('components')">Components</span>
+    <span class="ds-icon ds-nav__toggle" id="themeBtn" title="Toggle theme">dark_mode</span>
+  </nav>
+</div>
+
+<div class="page">
+
+  <p class="ds-body-lg" style="max-width:640px;margin-top:8px">
+    A framework-agnostic CSS design system extracted from the portfolio site. Layered
+    tokens (<code class="tok">primitives → semantic</code>), a component library, full
+    light/dark theming. Toggle the theme (top-right) to watch the staggered cross-fade.
+  </p>
+
+  <!-- ══════════════════════ COLOUR ══════════════════════ -->
+  <section id="colour">
+    <h2>Colour</h2>
+    <p class="sub">Primitives are raw tonal ramps — the only place hex lives. Semantic tokens map roles onto them and are the ones components use.</p>
+
+    <h3>Primitive ramps</h3>
+    <div id="ramps"></div>
+
+    <h3>Semantic roles</h3>
+    <div class="grid cols-4" id="semantic-swatches"></div>
+
+    <h3>Surfaces &amp; text</h3>
+    <div class="grid cols-4" id="surface-swatches"></div>
+  </section>
+
+  <!-- ══════════════════════ TYPE ══════════════════════ -->
+  <section id="type">
+    <h2>Typography</h2>
+    <p class="sub">Wix Madefor Display for headings, Wix Madefor Text for body. The scale is exposed as ready-to-use <code class="tok">--type-*</code> shorthand tokens and utility classes.</p>
+
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div><div class="ds-display-lg">Display Large</div><div class="spec">.ds-display-lg · 46px/1.25 · semibold · Display</div></div>
+      <div><div class="ds-display-md">Display Medium</div><div class="spec">.ds-display-md · 40px/1.2 · semibold · Display</div></div>
+      <div><div class="ds-heading-lg">Heading Large</div><div class="spec">.ds-heading-lg · 32px · semibold · Display</div></div>
+      <div><div class="ds-heading-md">Heading Medium</div><div class="spec">.ds-heading-md · 24px · semibold · Display</div></div>
+      <div><div class="ds-heading-sm">Heading Small</div><div class="spec">.ds-heading-sm · 18px · semibold · Display</div></div>
+      <div><div class="ds-body-lg">Body Large — the quick brown fox jumps over the lazy dog.</div><div class="spec">.ds-body-lg · 16px/1.6 · regular · Text</div></div>
+      <div><div class="ds-body-md">Body Medium — the quick brown fox jumps over the lazy dog.</div><div class="spec">.ds-body-md · 15px/1.5 · regular · Text</div></div>
+      <div><div class="ds-body-sm">Body Small — the quick brown fox jumps over the lazy dog.</div><div class="spec">.ds-body-sm · 13px/1.5 · regular · Text</div></div>
+      <div><div class="ds-eyebrow">Eyebrow / Overline</div><div class="spec">.ds-eyebrow · 12px · uppercase · 0.12em tracking</div></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════ FOUNDATIONS ══════════════════════ -->
+  <section id="foundations">
+    <h2>Foundations</h2>
+    <p class="sub">Spacing on a 4px grid, a four-step radius scale, and five elevation levels.</p>
+
+    <h3>Spacing</h3>
+    <div id="spacing"></div>
+
+    <h3>Radius</h3>
+    <div class="row">
+      <div class="radius-box" style="border-radius:var(--radius-8)">8</div>
+      <div class="radius-box" style="border-radius:var(--radius-12)">12</div>
+      <div class="radius-box" style="border-radius:var(--radius-24)">24</div>
+      <div class="radius-box" style="border-radius:var(--radius-full)">full</div>
+    </div>
+
+    <h3>Elevation</h3>
+    <div class="grid cols-3">
+      <div class="elev-box" style="box-shadow:var(--elevation-1)">elevation-1</div>
+      <div class="elev-box" style="box-shadow:var(--elevation-2)">elevation-2</div>
+      <div class="elev-box" style="box-shadow:var(--elevation-3)">elevation-3</div>
+      <div class="elev-box" style="box-shadow:var(--elevation-4)">elevation-4</div>
+      <div class="elev-box" style="box-shadow:var(--elevation-5)">elevation-5</div>
+      <div class="elev-box" style="box-shadow:var(--inset-shadow-field)">inset-field</div>
+    </div>
+
+    <h3>Iconography — Material Symbols Rounded</h3>
+    <div class="row">
+      <span class="ds-icon ds-icon--sm">favorite</span>
+      <span class="ds-icon">favorite</span>
+      <span class="ds-icon ds-icon--lg">favorite</span>
+      <span class="ds-icon ds-icon--xl">favorite</span>
+      <span class="ds-icon ds-icon--xl ds-icon--filled" style="color:var(--primary-main)">favorite</span>
+      <span class="ds-icon ds-icon--lg" style="color:var(--success-main)">check_circle</span>
+      <span class="ds-icon ds-icon--lg" style="color:var(--error-main)">error</span>
+    </div>
+    <div class="spec">Sizes sm/md/lg/xl · add <code class="tok">.ds-icon--filled</code> to fill</div>
+  </section>
+
+  <!-- ══════════════════════ COMPONENTS ══════════════════════ -->
+  <section id="components">
+    <h2>Components</h2>
+    <p class="sub">The reusable pieces, all token-driven and theme-aware.</p>
+
+    <h3>Buttons</h3>
+    <div class="row">
+      <button class="ds-button">Send message</button>
+      <button class="ds-button ds-button--secondary">Secondary</button>
+      <button class="ds-button ds-button--ghost">Ghost</button>
+      <button class="ds-button ds-button--sm">Small</button>
+      <button class="ds-button" disabled>Disabled</button>
+    </div>
+    <div class="row" style="margin-top:20px">
+      <span class="ds-cta">View selected work <span class="ds-icon ds-icon--sm">arrow_forward</span></span>
+    </div>
+
+    <h3>Chips &amp; badges</h3>
+    <div class="row">
+      <span class="ds-chip">Design tokens</span>
+      <span class="ds-chip">Accessibility</span>
+      <span class="ds-badge ds-badge--primary">Primary</span>
+      <span class="ds-badge ds-badge--success"><span class="ds-icon ds-icon--sm ds-icon--filled">check</span>Success</span>
+      <span class="ds-badge ds-badge--error">Error</span>
+      <span class="ds-badge ds-badge--warning">Warning</span>
+      <span class="ds-badge ds-badge--info">Info</span>
+    </div>
+
+    <h3>Cards</h3>
+    <div class="grid cols-2">
+      <div class="ds-card">
+        <div class="ds-media" style="height:160px">Cover image — one key screen</div>
+        <div class="ds-card__title">Project one — title</div>
+        <div class="ds-card__meta">Role · one-line description of the problem</div>
+      </div>
+      <div class="ds-surface">
+        <div class="ds-heading-sm">Plain surface</div>
+        <p class="ds-body-md" style="margin:8px 0 0">A solid <code class="tok">.ds-surface</code> with elevation-1 — for content that shouldn't read as glass. Hover the card at left to see the mint glow.</p>
+      </div>
+    </div>
+
+    <h3>Form fields</h3>
+    <div class="ds-surface" style="max-width:460px">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div class="ds-field"><label for="n">Name</label><input id="n" type="text" placeholder="Your name"></div>
+        <div class="ds-field"><label for="e">Email</label><input id="e" type="email" placeholder="you@example.com"></div>
+        <div class="ds-field ds-field--error">
+          <label for="m">Message</label>
+          <textarea id="m" rows="3" placeholder="Say hello…"></textarea>
+          <span class="ds-field__error">This field is required.</span>
+        </div>
+        <div><button class="ds-button">Send message</button></div>
+      </div>
+    </div>
+
+    <h3>Navigation pill</h3>
+    <div class="row">
+      <nav class="ds-nav">
+        <span class="ds-nav__item is-active">Home</span>
+        <span class="ds-nav__item">Work</span>
+        <span class="ds-nav__item">About</span>
+        <span class="ds-nav__item">Contact</span>
+        <span class="ds-icon ds-nav__toggle">dark_mode</span>
+      </nav>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ── Data mirrors the token files (kept in sync manually for the demo) ──
+  var RAMPS = {
+    Blue:   ["50","100","200","300","400","500","600","700","800","900"],
+    Red:    ["50","200","300","600","900"],
+    Orange: ["50","300","700","900"],
+    Green:  ["50","200","400","700","900"],
+    Grey:   ["25","50","100","150","300","400","500","600","700","800","900"]
+  };
+  var HUE_VAR = { Blue:"blue", Red:"red", Orange:"orange", Green:"green", Grey:"grey" };
+
+  var SEMANTIC = [
+    "primary-main","primary-container","primary-on-container",
+    "secondary-main","secondary-container","secondary-on-container",
+    "error-main","error-container","warning-main","warning-container",
+    "info-main","info-container","success-main","success-container",
+    "neutral-main","neutral-container","promotional-main","promotional-contrast-text"
+  ];
+  var SURFACES = [
+    "background-default","background-highlight","surface-default","surface-inverse",
+    "text-display","text-primary","text-secondary","text-disabled",
+    "divider-default","divider-strong","outline-default","outline-strong"
+  ];
+  var SPACES = ["4","8","12","16","20","24","28","32","48","64","96"];
+
+  var css = getComputedStyle(document.documentElement);
+  function resolve(varName) { return css.getPropertyValue(varName).trim(); }
+  function textOn(hex) {
+    // crude luminance pick for label legibility on a swatch
+    var h = hex.replace('#',''); if (h.length === 3) h = h.split('').map(function(c){return c+c;}).join('');
+    if (h.length < 6) return '#000';
+    var r = parseInt(h.substr(0,2),16), g = parseInt(h.substr(2,2),16), b = parseInt(h.substr(4,2),16);
+    return (0.299*r + 0.587*g + 0.114*b) > 150 ? '#141518' : '#fff';
+  }
+
+  function buildRamps() {
+    var host = document.getElementById('ramps');
+    host.innerHTML = Object.keys(RAMPS).map(function (name) {
+      var stops = RAMPS[name].map(function (s) {
+        var v = '--' + HUE_VAR[name] + '-' + s;
+        var hex = resolve(v);
+        return '<div style="background:var(' + v + ');color:' + textOn(hex) + '">' + s + '</div>';
+      }).join('');
+      return '<div style="margin-bottom:14px"><div class="ds-body-sm" style="margin-bottom:6px">' + name + '</div><div class="ramp">' + stops + '</div></div>';
+    }).join('');
+  }
+
+  function swatch(role) {
+    var v = '--' + role;
+    var hex = resolve(v);
+    return '<div class="swatch"><div class="chip-color" style="background:var(' + v + ')"></div>' +
+      '<div class="meta"><div class="name">' + role + '</div><div class="val">' + (hex || '—') + '</div></div></div>';
+  }
+  function buildSwatches() {
+    document.getElementById('semantic-swatches').innerHTML = SEMANTIC.map(swatch).join('');
+    document.getElementById('surface-swatches').innerHTML = SURFACES.map(swatch).join('');
+  }
+
+  function buildSpacing() {
+    document.getElementById('spacing').innerHTML = SPACES.map(function (s) {
+      return '<div class="space-demo"><span class="lbl">space-' + s + '</span>' +
+        '<span class="space-bar" style="width:var(--space-' + s + ')"></span>' +
+        '<span class="ds-body-sm">' + s + 'px</span></div>';
+    }).join('');
+  }
+
+  // ── Theme toggle with the staggered cross-fade (ported from portfolio) ──
+  var themeTimer = null;
+  function setTheme(theme, animate) {
+    var root = document.documentElement;
+    if (animate) {
+      root.classList.add('theming');
+      if (themeTimer) clearTimeout(themeTimer);
+      themeTimer = setTimeout(function () { root.classList.remove('theming'); }, 2250);
+    }
+    root.setAttribute('data-theme', theme);
+    try { localStorage.setItem('ds-theme', theme); } catch (e) {}
+    document.querySelectorAll('.ds-nav__toggle, #themeBtn').forEach(function (b) {
+      b.textContent = theme === 'light' ? 'dark_mode' : 'light_mode';
+    });
+    // swatches show resolved hex — recompute after the fade settles
+    setTimeout(function () { css = getComputedStyle(document.documentElement); buildRamps(); buildSwatches(); }, animate ? 1200 : 0);
+  }
+
+  var saved = 'light';
+  try { saved = localStorage.getItem('ds-theme') || 'light'; } catch (e) {}
+  setTheme(saved, false);
+
+  document.getElementById('themeBtn').addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    setTheme(next, true);
+  });
+
+  window.jump = function (id) {
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('.topbar .ds-nav__item').forEach(function (i) { i.classList.remove('is-active'); });
+    if (window.event && window.event.target) window.event.target.classList.add('is-active');
+  };
+
+  buildRamps(); buildSwatches(); buildSpacing();
+})();
+</script>
+</body>
+</html>

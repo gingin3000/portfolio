@@ -1,0 +1,47 @@
+/* ============================================================================
+   CARD & SURFACE — content containers.
+   .ds-surface   — plain elevated surface (solid).
+   .ds-card      — interactive glass card with mint-glow hover (from .work-card).
+   .ds-media     — dashed placeholder frame for imagery.
+   ========================================================================== */
+
+.ds-surface {
+  background: var(--surface-default);
+  border: 1px solid var(--outline-default);
+  border-radius: var(--radius-12);
+  padding: var(--space-24);
+  box-shadow: var(--elevation-1);
+}
+
+/* Glassmorphism card — translucent, blurred, glow on hover. Relies on the
+   app-level --glass-* / --glow* helper tokens (see effects.css). */
+.ds-card {
+  background: var(--glass-bg, rgba(255,255,255,0.6));
+  border: 1px solid var(--glass-border, rgba(0,0,0,0.06));
+  border-radius: var(--radius-12);
+  padding: var(--space-24);
+  cursor: pointer;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: box-shadow 0.6s ease, border-color 0.6s ease;
+}
+.ds-card:hover {
+  box-shadow: 0 0 0 1px var(--glow-border, rgba(35,146,122,0.3)), 0 8px 40px -8px var(--glow, rgba(35,146,122,0.2));
+  border-color: var(--glow-border, rgba(35,146,122,0.3));
+}
+.ds-card__title { margin-top: var(--space-16); font: var(--type-heading-sm); color: var(--text-display); }
+.ds-card__meta  { margin-top: var(--space-4);  font: var(--type-body-sm);    color: var(--text-secondary); }
+
+/* Dashed placeholder frame — for cover/hero/portrait slots. */
+.ds-media {
+  border-radius: var(--radius-8);
+  background: var(--surface-default);
+  border: 1px dashed var(--outline-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-16);
+  font: var(--type-body-sm);
+  color: var(--text-secondary);
+}

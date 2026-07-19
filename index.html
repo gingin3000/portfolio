@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gina — UX &amp; Content Design</title>
-<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="design-system/design-system.css">
 <style>
   /* App-specific translucent helpers (not part of the core token set) */
   :root {
@@ -223,7 +223,7 @@
     }).join("");
     var icon = state.theme === "light" ? "dark_mode" : "light_mode";
     return '<div class="nav-wrap"><div class="nav-pill">' + items +
-      '<span class="material-symbols-rounded theme-btn" data-toggle-theme="1">' + icon + '</span></div></div>';
+      '<span class="ds-icon theme-btn" data-toggle-theme="1">' + icon + '</span></div></div>';
   }
 
   // ── Views ────────────────────────────────────────────────────────────
@@ -233,7 +233,7 @@
       '<div class="home-headline">One-line positioning statement: what Gina designs, for whom, and the feeling it leaves behind.</div>' +
       '<div class="home-cta" data-go="work">' +
         '<span style="font:var(--fw-medium) 15px var(--font-family)">View selected work</span>' +
-        '<span class="material-symbols-rounded" style="font-size:18px">arrow_forward</span>' +
+        '<span class="ds-icon" style="font-size:18px">arrow_forward</span>' +
       '</div>' +
       '</div></div>';
   }
@@ -260,7 +260,7 @@
     var title = TITLES[state.caseIdx] + " — full case study title, framed as the challenge";
     return '<div class="view view-pad">' +
       '<div class="case-back" data-go="work">' +
-        '<span class="material-symbols-rounded" style="font-size:16px">arrow_back</span>' +
+        '<span class="ds-icon" style="font-size:16px">arrow_back</span>' +
         '<span style="font:var(--fw-medium) 13px var(--font-family)">All work</span>' +
       '</div>' +
       '<div style="max-width:680px">' +
@@ -309,7 +309,7 @@
     var body;
     if (state.sent) {
       body = '<div class="sent-card">' +
-        '<span class="material-symbols-rounded" style="font-size:36px;color:var(--success-main)">check_circle</span>' +
+        '<span class="ds-icon" style="font-size:36px;color:var(--success-main)">check_circle</span>' +
         '<div style="margin-top:16px;font:var(--fw-semibold) 20px var(--font-family-headings);color:var(--text-display)">Message sent</div>' +
         '<div style="margin-top:8px;font:400 14px/1.5 var(--font-family);color:var(--text-secondary)">Confirmation line: when Gina typically replies.</div>' +
         '<div class="send-another" data-reset="1">Send another</div>' +

@@ -1,0 +1,59 @@
+/* ============================================================================
+   BUTTON — pill-shaped actions. Variants: primary (default), secondary, ghost.
+   Sizes: md (default), sm. Generalised from the portfolio's .send-btn / .home-cta.
+   Usage: <button class="ds-button">Send message</button>
+          <button class="ds-button ds-button--secondary ds-button--sm">Cancel</button>
+   ========================================================================== */
+
+.ds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  font: var(--fw-medium) var(--type-button-md-font-size) var(--font-family);
+  letter-spacing: 0.025em;
+  color: var(--primary-contrast-text);
+  background: var(--primary-main);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  padding: 12px 28px;
+  cursor: pointer;
+  transition: box-shadow 0.6s ease, background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+.ds-button:hover { box-shadow: 0 0 32px -4px var(--glow-strong, rgba(2,77,240,0.45)); }
+.ds-button:disabled {
+  background: var(--neutral-container);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ── Secondary: tonal container ────────────────────────────────── */
+.ds-button--secondary {
+  background: var(--secondary-main);
+  color: var(--secondary-contrast-text);
+}
+.ds-button--secondary:hover { background: var(--secondary-container); box-shadow: var(--elevation-1); }
+
+/* ── Ghost: text-only with hover surface ───────────────────────── */
+.ds-button--ghost {
+  background: transparent;
+  color: var(--primary-main);
+  border-color: var(--outline-default);
+}
+.ds-button--ghost:hover { background: var(--primary-hover-surface); box-shadow: none; }
+
+/* ── Sizes ─────────────────────────────────────────────────────── */
+.ds-button--sm { font-size: 13px; padding: 8px 18px; }
+
+/* ── Inline text link with arrow (the "View selected work" CTA) ── */
+.ds-cta {
+  display: inline-flex;
+  gap: var(--space-12);
+  align-items: center;
+  color: var(--primary-main);
+  font: var(--fw-medium) 15px var(--font-family);
+  cursor: pointer;
+  transition: text-shadow 0.6s ease, gap 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+.ds-cta:hover { gap: var(--space-16); text-shadow: 0 0 16px var(--glow-strong, rgba(2,77,240,0.45)); }

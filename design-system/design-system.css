@@ -1,0 +1,27 @@
+/* ============================================================================
+   AURORA DESIGN SYSTEM — single entrypoint.
+   Import this one file to get the whole system:
+
+       <link rel="stylesheet" href="design-system.css">
+
+   Layers cascade in dependency order: fonts → tokens → components.
+   Load order matters (primitives before semantic before components).
+   ========================================================================== */
+
+/* 1 — Typefaces (external; swap for self-hosted in one place) */
+@import url('./tokens/fonts.css');
+
+/* 2 — Tokens: primitives → semantic → foundations */
+@import url('./tokens/primitives.css');
+@import url('./tokens/semantic.css');
+@import url('./tokens/foundations.css');
+
+/* 3 — Components */
+@import url('./components/effects.css');
+@import url('./components/base.css');
+@import url('./components/icon.css');
+@import url('./components/button.css');
+@import url('./components/card.css');
+@import url('./components/field.css');
+@import url('./components/chip.css');
+@import url('./components/nav.css');

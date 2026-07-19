@@ -1,0 +1,64 @@
+/* ============================================================================
+   BASE — element defaults, focus ring, typography utilities, theme cross-fade.
+   Depends on tokens (foundations + semantic).
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: var(--type-body-md);
+  color: var(--text-primary);
+  background: var(--background-default);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--primary-main); text-decoration: none; }
+a:hover { color: var(--primary-hover); }
+
+::placeholder { color: var(--text-disabled); opacity: 1; }
+
+/* Accessible focus ring — applied on keyboard focus only. */
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ── Typography utilities ──────────────────────────────────────────
+   Map the type scale onto classes. `font:` shorthand also sets family,
+   weight and line-height, so colour is the only extra property. */
+.ds-display-lg { font: var(--type-display-lg); color: var(--text-display); letter-spacing: -0.01em;  text-wrap: pretty; }
+.ds-display-md { font: var(--type-display-md); color: var(--text-display); letter-spacing: -0.005em; text-wrap: pretty; }
+.ds-heading-lg { font: var(--type-heading-lg); color: var(--text-display); letter-spacing: -0.005em; }
+.ds-heading-md { font: var(--type-heading-md); color: var(--text-display); }
+.ds-heading-sm { font: var(--type-heading-sm); color: var(--text-display); }
+.ds-body-lg    { font: var(--type-body-lg);    color: var(--text-primary); }
+.ds-body-md    { font: var(--type-body-md);    color: var(--text-primary); }
+.ds-body-sm    { font: var(--type-body-sm);    color: var(--text-secondary); }
+.ds-label      { font: var(--type-label-md);   color: var(--text-primary); }
+.ds-eyebrow {
+  font: var(--type-eyebrow); color: var(--text-secondary);
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.ds-muted { color: var(--text-secondary); }
+.ds-caption { font: var(--type-body-sm); color: var(--text-disabled); }
+
+/* ── Theme cross-fade ──────────────────────────────────────────────
+   Add class `theming` to <html> on toggle; the background fades first,
+   text colour follows after a beat so it melts through the new surface
+   rather than washing through mid-grey. Remove the class after ~2.25s. */
+html.theming, html.theming *, html.theming *::before, html.theming *::after {
+  transition:
+    background-color 1000ms cubic-bezier(0.45,0.05,0.55,0.95) 0ms,
+    background       1000ms cubic-bezier(0.45,0.05,0.55,0.95) 0ms,
+    border-color     1000ms cubic-bezier(0.45,0.05,0.55,0.95) 0ms,
+    box-shadow       1000ms cubic-bezier(0.45,0.05,0.55,0.95) 0ms,
+    color            1000ms cubic-bezier(0.45,0.05,0.55,0.95) 1050ms,
+    fill             1000ms cubic-bezier(0.45,0.05,0.55,0.95) 1050ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theming, html.theming *, html.theming *::before, html.theming *::after {
+    transition: none !important;
+  }
+}
