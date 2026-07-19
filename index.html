@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gina — UX &amp; Content Design</title>
+<title>Gina — UX &amp; Content Design</title><!-- Fallback only; the live tab title comes from CONTENT.siteTitle in the script below. -->
 <link rel="stylesheet" href="design-system/design-system.css">
 <style>
   /* App-specific translucent helpers (not part of the core token set) */
@@ -135,34 +135,119 @@
 (function () {
   "use strict";
 
-  // ── State (ported from the DCLogic component) ─────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════
+  //  ✏️  YOUR WEBSITE CONTENT — this is the only block you edit to change words
+  // ───────────────────────────────────────────────────────────────────────
+  //  • Change the text inside the "quotes".
+  //  • Keep the quotes, colons, and commas exactly where they are.
+  //  • To add/remove a project, skill, fact, or case-study section: copy an
+  //    existing entry (with its trailing comma) and edit it, or delete one.
+  //  • You don't need to escape & < > or quotes in the text — that's automatic.
+  //  Everything BELOW the "END OF CONTENT" banner is layout/logic — leave it.
+  // ═══════════════════════════════════════════════════════════════════════
+  var CONTENT = {
+
+    // Text shown in the browser tab
+    siteTitle: "Gina — UX & Content Design",
+
+    // ── Top navigation ─────────────────────────────────────────────
+    // "label" is what visitors see. Leave "id" alone — it wires to the pages.
+    nav: [
+      { id: "home",    label: "Home" },
+      { id: "work",    label: "Work" },
+      { id: "about",   label: "About" },
+      { id: "contact", label: "Contact" }
+    ],
+
+    // ── HOME page ──────────────────────────────────────────────────
+    home: {
+      eyebrow:  "UX & Content Design",
+      headline: "One-line positioning statement: what Gina designs, for whom, and the feeling it leaves behind.",
+      ctaLabel: "View selected work"
+    },
+
+    // ── WORK page (the project gallery) ────────────────────────────
+    work: {
+      title: "Selected work",
+      intro: "One-sentence framing for the gallery: what kinds of problems these four case studies cover.",
+      // One entry per card. Add or delete an entry to change the number of cards.
+      projects: [
+        { title: "Project one — title",   meta: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
+        { title: "Project two — title",   meta: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
+        { title: "Project three — title", meta: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
+        { title: "Project four — title",  meta: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" }
+      ]
+    },
+
+    // ── CASE STUDY page (opens when a project card is clicked) ──────
+    // One template serves every project. The heading is the clicked project's
+    // "title" (above) with "titleSuffix" appended.
+    caseStudy: {
+      titleSuffix: " — full case study title, framed as the challenge",
+      subtitle:    'Subtitle: one sentence stating the outcome of the project — the "so what" up front.',
+      backLabel:   "All work",
+      hero:        "Hero image — the final product in context, full width",
+      // The four facts in the row under the hero image.
+      facts: [
+        { label: "Role",     value: "Your role on the project" },
+        { label: "Timeline", value: "Duration and year" },
+        { label: "Team",     value: "Who you worked with" },
+        { label: "Platform", value: "Web, mobile, etc." }
+      ],
+      // Body sections, in order. "media" holds the caption(s) for grey image
+      // placeholders: [] = none, one caption = one wide box, two = a side-by-side pair.
+      sections: [
+        { heading: "The problem",
+          body: "Paragraph describing the user and business problem — evidence it was worth solving, who was affected, what was at stake.",
+          media: [] },
+        { heading: "Approach",
+          body: "Paragraph on process: research done, constraints, how UX and content design worked together, key decisions and trade-offs.",
+          media: ["Process artifact — sketches, journey map, or content model", "Iteration — before/after or wireframe-to-final"] },
+        { heading: "The solution",
+          body: "Paragraph walking through what shipped — the key screens or flows, and the content decisions that made them work.",
+          media: ["Solution imagery — final screens, annotated if helpful"] },
+        { heading: "Outcome",
+          body: "Paragraph on results: metrics moved, qualitative feedback, what was learned, what came next.",
+          media: [] }
+      ]
+    },
+
+    // ── ABOUT page ─────────────────────────────────────────────────
+    about: {
+      title:           "About",
+      portrait:        "Portrait photo — natural light, unposed",
+      portraitCaption: "Caption: location, or a small human detail.",
+      // Each string is one paragraph.
+      paragraphs: [
+        "Paragraph 1 — who Gina is: current role, years of practice, the intersection of UX and content design.",
+        "Paragraph 2 — design philosophy: technology that recedes; clarity over decoration; language as interface.",
+        "Paragraph 3 — background: how she got here, domains worked in, what she's drawn to next."
+      ],
+      skillsHeading: "Practice",
+      skills: ["Skill or method 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5", "Skill 6"]
+    },
+
+    // ── CONTACT page ───────────────────────────────────────────────
+    contact: {
+      title:        "Contact",
+      intro:        "One warm sentence inviting a conversation — projects, collaborations, or just to say hello.",
+      nameLabel:    "Name",
+      emailLabel:   "Email",
+      messageLabel: "Message",
+      sendLabel:    "Send message",
+      // Shown after the form is submitted.
+      sentTitle:    "Message sent",
+      sentBody:     "Confirmation line: when Gina typically replies.",
+      sentAgain:    "Send another"
+    }
+  };
+  // ═══════════════════════════════════════════════════════════════════════
+  //  ⛔  END OF CONTENT — everything below is layout & logic. No edits needed.
+  // ═══════════════════════════════════════════════════════════════════════
+
+  // ── State ─────────────────────────────────────────────────────────────
   var state = { page: "home", theme: "light", sent: false, caseIdx: 0 };
   var form = { name: "", email: "", msg: "" };
-
-  var PAGES = [["home", "Home"], ["work", "Work"], ["about", "About"], ["contact", "Contact"]];
-
-  var TITLES = [
-    "Project one — title",
-    "Project two — title",
-    "Project three — title",
-    "Project four — title"
-  ];
-
-  var PROJECTS = [
-    { title: "Project one — title", line: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
-    { title: "Project two — title", line: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
-    { title: "Project three — title", line: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
-    { title: "Project four — title", line: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" }
-  ];
-
-  var CASE_FACTS = [
-    { label: "Role", value: "Your role on the project" },
-    { label: "Timeline", value: "Duration and year" },
-    { label: "Team", value: "Who you worked with" },
-    { label: "Platform", value: "Web, mobile, etc." }
-  ];
-
-  var SKILLS = ["Skill or method 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5", "Skill 6"];
 
   // ── Aurora blob geometry, per page (ported from blobsFor) ──────────────
   function blobsFor(page) {
@@ -214,12 +299,11 @@
   }
 
   function navHTML() {
-    var items = PAGES.map(function (p) {
-      var id = p[0], label = p[1];
-      var active = state.page === id || (id === "work" && state.page === "case");
+    var items = CONTENT.nav.map(function (p) {
+      var active = state.page === p.id || (p.id === "work" && state.page === "case");
       var color = active ? "var(--text-primary)" : "var(--text-secondary)";
       var bg = active ? "var(--pill-active-bg)" : "transparent";
-      return '<span class="nav-item" data-go="' + id + '" style="color:' + color + ';background:' + bg + '">' + esc(label) + '</span>';
+      return '<span class="nav-item" data-go="' + p.id + '" style="color:' + color + ';background:' + bg + '">' + esc(p.label) + '</span>';
     }).join("");
     var icon = state.theme === "light" ? "dark_mode" : "light_mode";
     return '<div class="nav-wrap"><div class="nav-pill">' + items +
@@ -228,77 +312,83 @@
 
   // ── Views ────────────────────────────────────────────────────────────
   function homeHTML() {
+    var c = CONTENT.home;
     return '<div class="view home-view"><div style="max-width:680px">' +
-      '<div class="eyebrow">UX &amp; Content Design</div>' +
-      '<div class="home-headline">One-line positioning statement: what Gina designs, for whom, and the feeling it leaves behind.</div>' +
+      '<div class="eyebrow">' + esc(c.eyebrow) + '</div>' +
+      '<div class="home-headline">' + esc(c.headline) + '</div>' +
       '<div class="home-cta" data-go="work">' +
-        '<span style="font:var(--fw-medium) 15px var(--font-family)">View selected work</span>' +
+        '<span style="font:var(--fw-medium) 15px var(--font-family)">' + esc(c.ctaLabel) + '</span>' +
         '<span class="ds-icon" style="font-size:18px">arrow_forward</span>' +
       '</div>' +
       '</div></div>';
   }
 
   function workHTML() {
-    var cards = PROJECTS.map(function (p, i) {
+    var w = CONTENT.work;
+    var cards = w.projects.map(function (p, i) {
       return '<div class="work-card" data-open="' + i + '">' +
         '<div class="work-cover">' + esc(p.cover) + '</div>' +
         '<div class="work-title">' + esc(p.title) + '</div>' +
-        '<div class="work-line">' + esc(p.line) + '</div>' +
+        '<div class="work-line">' + esc(p.meta) + '</div>' +
       '</div>';
     }).join("");
     return '<div class="view view-pad">' +
-      '<div class="section-title" style="margin:24px 0 8px">Selected work</div>' +
-      '<div class="lede" style="margin-bottom:48px">One-sentence framing for the gallery: what kinds of problems these four case studies cover.</div>' +
+      '<div class="section-title" style="margin:24px 0 8px">' + esc(w.title) + '</div>' +
+      '<div class="lede" style="margin-bottom:48px">' + esc(w.intro) + '</div>' +
       '<div class="work-grid">' + cards + '</div>' +
     '</div>';
   }
 
   function caseHTML() {
-    var facts = CASE_FACTS.map(function (f) {
+    var cs = CONTENT.caseStudy;
+    var proj = CONTENT.work.projects[state.caseIdx] || CONTENT.work.projects[0];
+    var facts = cs.facts.map(function (f) {
       return '<div><div class="fact-label">' + esc(f.label) + '</div><div class="fact-value">' + esc(f.value) + '</div></div>';
     }).join("");
-    var title = TITLES[state.caseIdx] + " — full case study title, framed as the challenge";
+    var sections = cs.sections.map(function (s) {
+      var media = "";
+      var m = s.media || [];
+      if (m.length === 1) {
+        media = '<div class="media" style="margin-top:24px;height:360px">' + esc(m[0]) + '</div>';
+      } else if (m.length >= 2) {
+        media = '<div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px">' +
+          m.map(function (cap) { return '<div class="media" style="height:220px">' + esc(cap) + '</div>'; }).join("") +
+        '</div>';
+      }
+      return '<div><div class="case-h">' + esc(s.heading) + '</div><div class="case-p">' + esc(s.body) + '</div>' + media + '</div>';
+    }).join("");
+    var title = esc(proj.title) + esc(cs.titleSuffix);
     return '<div class="view view-pad">' +
       '<div class="case-back" data-go="work">' +
         '<span class="ds-icon" style="font-size:16px">arrow_back</span>' +
-        '<span style="font:var(--fw-medium) 13px var(--font-family)">All work</span>' +
+        '<span style="font:var(--fw-medium) 13px var(--font-family)">' + esc(cs.backLabel) + '</span>' +
       '</div>' +
       '<div style="max-width:680px">' +
-        '<div class="case-title">' + esc(title) + '</div>' +
-        '<div class="case-sub">Subtitle: one sentence stating the outcome of the project — the "so what" up front.</div>' +
+        '<div class="case-title">' + title + '</div>' +
+        '<div class="case-sub">' + esc(cs.subtitle) + '</div>' +
       '</div>' +
-      '<div class="case-hero">Hero image — the final product in context, full width</div>' +
+      '<div class="case-hero">' + esc(cs.hero) + '</div>' +
       '<div class="case-facts">' + facts + '</div>' +
-      '<div class="case-body">' +
-        '<div><div class="case-h">The problem</div><div class="case-p">Paragraph describing the user and business problem — evidence it was worth solving, who was affected, what was at stake.</div></div>' +
-        '<div><div class="case-h">Approach</div><div class="case-p">Paragraph on process: research done, constraints, how UX and content design worked together, key decisions and trade-offs.</div>' +
-          '<div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px">' +
-            '<div class="media" style="height:220px">Process artifact — sketches, journey map, or content model</div>' +
-            '<div class="media" style="height:220px">Iteration — before/after or wireframe-to-final</div>' +
-          '</div></div>' +
-        '<div><div class="case-h">The solution</div><div class="case-p">Paragraph walking through what shipped — the key screens or flows, and the content decisions that made them work.</div>' +
-          '<div class="media" style="margin-top:24px;height:360px">Solution imagery — final screens, annotated if helpful</div></div>' +
-        '<div><div class="case-h">Outcome</div><div class="case-p">Paragraph on results: metrics moved, qualitative feedback, what was learned, what came next.</div></div>' +
-      '</div>' +
+      '<div class="case-body">' + sections + '</div>' +
     '</div>';
   }
 
   function aboutHTML() {
-    var chips = SKILLS.map(function (s) { return '<span class="chip">' + esc(s) + '</span>'; }).join("");
+    var a = CONTENT.about;
+    var paras = a.paragraphs.map(function (p) { return '<div>' + esc(p) + '</div>'; }).join("");
+    var chips = a.skills.map(function (s) { return '<span class="chip">' + esc(s) + '</span>'; }).join("");
     return '<div class="view view-pad"><div class="about-grid">' +
       '<div style="display:flex;flex-direction:column;gap:20px">' +
-        '<div class="portrait">Portrait photo — natural light, unposed</div>' +
-        '<div class="caption">Caption: location, or a small human detail.</div>' +
+        '<div class="portrait">' + esc(a.portrait) + '</div>' +
+        '<div class="caption">' + esc(a.portraitCaption) + '</div>' +
       '</div>' +
       '<div style="max-width:560px">' +
-        '<div class="section-title" style="margin-bottom:24px">About</div>' +
+        '<div class="section-title" style="margin-bottom:24px">' + esc(a.title) + '</div>' +
         '<div style="display:flex;flex-direction:column;gap:20px;font:400 15px/1.7 var(--font-family);color:var(--text-primary)">' +
-          '<div>Paragraph 1 — who Gina is: current role, years of practice, the intersection of UX and content design.</div>' +
-          '<div>Paragraph 2 — design philosophy: technology that recedes; clarity over decoration; language as interface.</div>' +
-          '<div>Paragraph 3 — background: how she got here, domains worked in, what she\'s drawn to next.</div>' +
+          paras +
         '</div>' +
         '<div style="margin-top:40px;border-top:1px solid var(--divider-default);padding-top:24px">' +
-          '<div style="font:400 12px var(--font-family);color:var(--text-secondary);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:16px">Practice</div>' +
+          '<div style="font:400 12px var(--font-family);color:var(--text-secondary);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:16px">' + esc(a.skillsHeading) + '</div>' +
           '<div style="display:flex;flex-wrap:wrap;gap:8px">' + chips + '</div>' +
         '</div>' +
       '</div>' +
@@ -307,24 +397,25 @@
 
   function contactHTML() {
     var body;
+    var c = CONTENT.contact;
     if (state.sent) {
       body = '<div class="sent-card">' +
         '<span class="ds-icon" style="font-size:36px;color:var(--success-main)">check_circle</span>' +
-        '<div style="margin-top:16px;font:var(--fw-semibold) 20px var(--font-family-headings);color:var(--text-display)">Message sent</div>' +
-        '<div style="margin-top:8px;font:400 14px/1.5 var(--font-family);color:var(--text-secondary)">Confirmation line: when Gina typically replies.</div>' +
-        '<div class="send-another" data-reset="1">Send another</div>' +
+        '<div style="margin-top:16px;font:var(--fw-semibold) 20px var(--font-family-headings);color:var(--text-display)">' + esc(c.sentTitle) + '</div>' +
+        '<div style="margin-top:8px;font:400 14px/1.5 var(--font-family);color:var(--text-secondary)">' + esc(c.sentBody) + '</div>' +
+        '<div class="send-another" data-reset="1">' + esc(c.sentAgain) + '</div>' +
       '</div>';
     } else {
       body = '<div style="display:flex;flex-direction:column;gap:24px">' +
-        '<div class="field"><label>Name</label><input data-field="name" value="' + esc(form.name) + '"></div>' +
-        '<div class="field"><label>Email</label><input data-field="email" value="' + esc(form.email) + '"></div>' +
-        '<div class="field"><label>Message</label><textarea data-field="msg" rows="5">' + esc(form.msg) + '</textarea></div>' +
-        '<div><button class="send-btn" data-submit="1">Send message</button></div>' +
+        '<div class="field"><label>' + esc(c.nameLabel) + '</label><input data-field="name" value="' + esc(form.name) + '"></div>' +
+        '<div class="field"><label>' + esc(c.emailLabel) + '</label><input data-field="email" value="' + esc(form.email) + '"></div>' +
+        '<div class="field"><label>' + esc(c.messageLabel) + '</label><textarea data-field="msg" rows="5">' + esc(form.msg) + '</textarea></div>' +
+        '<div><button class="send-btn" data-submit="1">' + esc(c.sendLabel) + '</button></div>' +
       '</div>';
     }
     return '<div class="view view-pad"><div style="max-width:520px;margin-top:24px">' +
-      '<div class="section-title" style="margin-bottom:8px">Contact</div>' +
-      '<div style="font:400 15px/1.5 var(--font-family);color:var(--text-secondary);margin-bottom:40px;text-wrap:pretty">One warm sentence inviting a conversation — projects, collaborations, or just to say hello.</div>' +
+      '<div class="section-title" style="margin-bottom:8px">' + esc(c.title) + '</div>' +
+      '<div style="font:400 15px/1.5 var(--font-family);color:var(--text-secondary);margin-bottom:40px;text-wrap:pretty">' + esc(c.intro) + '</div>' +
       body +
     '</div></div>';
   }
@@ -408,6 +499,7 @@
   }
 
   // ── Init ───────────────────────────────────────────────────────────
+  document.title = CONTENT.siteTitle;
   var saved = null;
   try { saved = localStorage.getItem("gina-theme"); } catch (e) {}
   state.theme = saved || "light";
