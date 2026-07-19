@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gina — UX &amp; Content Design</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* App-specific translucent helpers (not part of the core token set) */
+  :root {
+    --pill-bg: rgba(255,255,255,0.6);
+    --pill-border: rgba(0,0,0,0.06);
+    --pill-shadow: 0 4px 24px -8px rgba(0,0,0,0.08);
+    --pill-active-bg: rgba(0,0,0,0.06);
+    --glass-bg: rgba(255,255,255,0.6);
+    --glass-border: rgba(0,0,0,0.06);
+    --glow: rgba(35,146,122,0.2);
+    --glow-strong: rgba(2,77,240,0.45);
+    --glow-border: rgba(35,146,122,0.3);
+    --aurora-mint: rgba(87,217,186,0.22);
+    --aurora-lav: rgba(169,123,239,0.16);
+    --aurora-azure: rgba(70,184,255,0.15);
+  }
+  [data-theme="dark"] {
+    --pill-bg: rgba(255,255,255,0.06);
+    --pill-border: rgba(255,255,255,0.1);
+    --pill-shadow: none;
+    --pill-active-bg: rgba(255,255,255,0.12);
+    --glass-bg: rgba(255,255,255,0.05);
+    --glass-border: rgba(255,255,255,0.1);
+    --glow: rgba(127,245,218,0.15);
+    --glow-strong: rgba(139,173,248,0.55);
+    --glow-border: rgba(127,245,218,0.3);
+    --aurora-mint: rgba(127,245,218,0.22);
+    --aurora-lav: rgba(192,156,255,0.18);
+    --aurora-azure: rgba(70,184,255,0.16);
+  }
+
+  /* Sunrise/sunset theme change: a staggered cross-fade.
+     The background (and borders/shadows) fade FIRST; the text color follows with a
+     delay, so instead of both washing through mid-gray at once, the text melts into
+     the darkening/lightening background and then re-emerges in its new color.
+     Applied ONLY while toggling (the .theming class is added on click and removed
+     after the fade), so hover interactions stay snappy the rest of the time. */
+  html.theming, html.theming *, html.theming *::before, html.theming *::after {
+    transition: background-color 1000ms cubic-bezier(0.45,0.05,0.55,0.95) 0ms,
+                background 1000ms cubic-bezier(0.45,0.05,0.55,0.95) 0ms,
+                border-color 1000ms cubic-bezier(0.45,0.05,0.55,0.95) 0ms,
+                box-shadow 1000ms cubic-bezier(0.45,0.05,0.55,0.95) 0ms,
+                color 1000ms cubic-bezier(0.45,0.05,0.55,0.95) 1050ms,
+                fill 1000ms cubic-bezier(0.45,0.05,0.55,0.95) 1050ms !important;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-family, system-ui); }
+  a { color: var(--primary-main); text-decoration: none; }
+  a:hover { color: var(--primary-hover); }
+  input::placeholder, textarea::placeholder { color: #6A7079; opacity: 1; }
+  [data-theme="dark"] input::placeholder, [data-theme="dark"] textarea::placeholder { color: #9CA2A9; }
+
+  .shell { min-height: 100vh; background: var(--background-default); display: flex; flex-direction: column; transition: background 0.4s ease; position: relative; overflow: hidden; }
+  .aurora { position: absolute; inset: 0; pointer-events: none; }
+  .blob { position: absolute; }
+
+  .nav-wrap { display: flex; justify-content: center; padding: 28px; position: relative; z-index: 2; }
+  .nav-pill { display: flex; gap: 8px; align-items: center; background: var(--pill-bg); border: 1px solid var(--pill-border); border-radius: 999px; padding: 6px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: var(--pill-shadow); }
+  .nav-item { font: var(--fw-medium) 13px var(--font-family); border-radius: 999px; padding: 8px 20px; cursor: pointer; transition: color 0.4s ease, background 0.4s ease, box-shadow 0.6s ease; user-select: none; }
+  .nav-item:hover { color: var(--text-primary) !important; box-shadow: 0 0 18px -2px var(--glow); }
+  .theme-btn { font-size: 18px; line-height: 1; display: flex; align-items: center; color: var(--text-secondary); border-radius: 999px; padding: 8px 14px; cursor: pointer; transition: color 0.4s ease, box-shadow 0.6s ease; }
+  .theme-btn:hover { color: var(--text-primary); box-shadow: 0 0 18px -2px var(--glow); }
+
+  .view { flex: 1; max-width: 1200px; width: 100%; margin: 0 auto; box-sizing: border-box; position: relative; z-index: 1; }
+  .view-pad { padding: 32px 56px 80px; }
+
+  .home-view { display: flex; flex-direction: column; justify-content: center; padding: 64px 72px; }
+  .eyebrow { font: var(--fw-regular) 12px var(--font-family); color: var(--text-secondary); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px; }
+  .home-headline { font: var(--fw-semibold) 46px/1.25 var(--font-family-headings); color: var(--text-display); letter-spacing: -0.01em; text-wrap: pretty; }
+  .home-cta { margin-top: 44px; display: inline-flex; gap: 12px; align-items: center; color: var(--primary-main); cursor: pointer; transition: text-shadow 0.6s ease, gap 0.6s cubic-bezier(0.22,1,0.36,1); }
+  .home-cta:hover { gap: 16px; text-shadow: 0 0 16px var(--glow-strong); }
+
+  .section-title { font: var(--fw-semibold) 32px var(--font-family-headings); color: var(--text-display); letter-spacing: -0.005em; }
+  .lede { font: 400 15px/1.5 var(--font-family); color: var(--text-secondary); max-width: 560px; text-wrap: pretty; }
+
+  .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .work-card { background: var(--glass-bg); border-radius: var(--radius-12); padding: 24px; cursor: pointer; border: 1px solid var(--glass-border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: box-shadow 0.6s ease, border-color 0.6s ease; }
+  .work-card:hover { box-shadow: 0 0 0 1px var(--glow-border), 0 8px 40px -8px var(--glow); border-color: var(--glow-border); }
+  .work-cover { height: 220px; border-radius: var(--radius-8); background: var(--background-default); border: 1px dashed var(--outline-strong); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font: 400 12px/1.5 var(--font-family); color: var(--text-secondary); }
+  .work-title { margin-top: 16px; font: var(--fw-semibold) 18px var(--font-family-headings); color: var(--text-display); }
+  .work-line { margin-top: 4px; font: 400 13px/1.5 var(--font-family); color: var(--text-secondary); }
+
+  .case-back { display: inline-flex; gap: 8px; align-items: center; color: var(--text-secondary); cursor: pointer; margin: 8px 0 32px; transition: color 0.4s ease, text-shadow 0.6s ease; }
+  .case-back:hover { color: var(--text-primary); text-shadow: 0 0 14px var(--glow); }
+  .case-title { font: var(--fw-semibold) 40px/1.2 var(--font-family-headings); color: var(--text-display); letter-spacing: -0.005em; text-wrap: pretty; }
+  .case-sub { margin-top: 16px; font: 400 16px/1.6 var(--font-family); color: var(--text-secondary); text-wrap: pretty; }
+  .case-hero { margin-top: 40px; height: 420px; border-radius: var(--radius-12); background: var(--surface-default); border: 1px dashed var(--outline-strong); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font: 400 13px/1.5 var(--font-family); color: var(--text-secondary); }
+  .case-facts { margin-top: 48px; display: grid; grid-template-columns: repeat(4,1fr); gap: 32px; padding: 32px 0; border-top: 1px solid var(--divider-default); border-bottom: 1px solid var(--divider-default); }
+  .fact-label { font: 400 11px var(--font-family); color: var(--text-secondary); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 8px; }
+  .fact-value { font: 400 14px/1.5 var(--font-family); color: var(--text-primary); }
+  .case-body { display: flex; flex-direction: column; gap: 64px; margin-top: 64px; max-width: 680px; }
+  .case-h { font: var(--fw-semibold) 24px var(--font-family-headings); color: var(--text-display); margin-bottom: 16px; }
+  .case-p { font: 400 15px/1.7 var(--font-family); color: var(--text-primary); }
+  .media { border-radius: var(--radius-8); background: var(--surface-default); border: 1px dashed var(--outline-strong); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font: 400 12px/1.5 var(--font-family); color: var(--text-secondary); }
+
+  .about-grid { display: grid; grid-template-columns: 320px 1fr; gap: 64px; margin-top: 24px; }
+  .portrait { width: 100%; aspect-ratio: 4/5; border-radius: var(--radius-12); background: var(--surface-default); border: 1px dashed var(--outline-strong); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font: 400 12px/1.5 var(--font-family); color: var(--text-secondary); }
+  .caption { font: 400 12px/1.5 var(--font-family); color: var(--text-disabled); }
+  .chip { font: var(--fw-medium) 12px var(--font-family); color: var(--neutral-on-container); background: var(--neutral-container); padding: 5px 12px; border-radius: var(--radius-full); }
+
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field label { font: var(--fw-medium) 13px var(--font-family); color: var(--text-primary); }
+  .field input, .field textarea { font: 400 15px var(--font-family); color: var(--text-primary); background: var(--surface-default); border: 1px solid var(--outline-default); border-radius: var(--radius-8); padding: 12px 16px; outline: none; box-shadow: var(--inset-shadow-field); }
+  .field textarea { font: 400 15px/1.5 var(--font-family); resize: vertical; }
+  .field input:focus, .field textarea:focus { border-color: var(--primary-main); }
+  .send-btn { font: var(--fw-medium) var(--type-button-md-font-size) var(--font-family); letter-spacing: 0.025em; color: var(--primary-contrast-text); background: var(--primary-main); border: none; border-radius: var(--radius-full); padding: 12px 28px; cursor: pointer; transition: box-shadow 0.6s ease; }
+  .send-btn:hover { box-shadow: 0 0 32px -4px var(--glow-strong); }
+  .sent-card { background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: var(--radius-12); padding: 40px; text-align: center; }
+  .send-another { margin-top: 24px; display: inline-block; font: var(--fw-medium) 13px var(--font-family); color: var(--primary-main); cursor: pointer; transition: text-shadow 0.6s ease; }
+  .send-another:hover { text-shadow: 0 0 16px var(--glow-strong); }
+
+  @media (max-width: 720px) {
+    .home-view { padding: 48px 28px; }
+    .view-pad { padding: 24px 28px 64px; }
+    .home-headline { font-size: 34px; }
+    .case-title { font-size: 30px; }
+    .work-grid { grid-template-columns: 1fr; }
+    .case-facts { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ── State (ported from the DCLogic component) ─────────────────────────
+  var state = { page: "home", theme: "light", sent: false, caseIdx: 0 };
+  var form = { name: "", email: "", msg: "" };
+
+  var PAGES = [["home", "Home"], ["work", "Work"], ["about", "About"], ["contact", "Contact"]];
+
+  var TITLES = [
+    "Project one — title",
+    "Project two — title",
+    "Project three — title",
+    "Project four — title"
+  ];
+
+  var PROJECTS = [
+    { title: "Project one — title", line: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
+    { title: "Project two — title", line: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
+    { title: "Project three — title", line: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
+    { title: "Project four — title", line: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" }
+  ];
+
+  var CASE_FACTS = [
+    { label: "Role", value: "Your role on the project" },
+    { label: "Timeline", value: "Duration and year" },
+    { label: "Team", value: "Who you worked with" },
+    { label: "Platform", value: "Web, mobile, etc." }
+  ];
+
+  var SKILLS = ["Skill or method 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5", "Skill 6"];
+
+  // ── Aurora blob geometry, per page (ported from blobsFor) ──────────────
+  function blobsFor(page) {
+    var mint = "var(--aurora-mint)";
+    var lav = "var(--aurora-lav)";
+    var azure = "var(--aurora-azure)";
+    var d = { top: "auto", left: "auto", right: "auto", bottom: "auto" };
+    function mk(o) { return Object.assign({}, d, o); }
+    var configs = {
+      home: [
+        mk({ top: "-120px", left: "15%", w: "480px", h: "480px", r: "50%", color: mint, blur: "40px", anim: "auroraA 18s ease-in-out infinite" }),
+        mk({ bottom: "-160px", right: "5%", w: "560px", h: "560px", r: "50%", color: lav, blur: "50px", anim: "auroraB 24s ease-in-out infinite" }),
+        mk({ top: "20%", right: "30%", w: "380px", h: "380px", r: "50%", color: azure, blur: "45px", anim: "auroraA 30s ease-in-out infinite reverse" })
+      ],
+      work: [
+        mk({ bottom: "-220px", left: "-10%", w: "900px", h: "420px", r: "50%", color: mint, blur: "60px", anim: "auroraB 26s ease-in-out infinite" }),
+        mk({ top: "8%", right: "-140px", w: "360px", h: "540px", r: "48% 52% 55% 45%", color: lav, blur: "50px", anim: "auroraA 22s ease-in-out infinite reverse" })
+      ],
+      about: [
+        mk({ top: "-100px", left: "-160px", w: "420px", h: "680px", r: "50%", color: azure, blur: "55px", anim: "auroraA 28s ease-in-out infinite" }),
+        mk({ bottom: "-140px", left: "45%", w: "540px", h: "380px", r: "60% 40% 55% 45%", color: mint, blur: "55px", anim: "auroraB 32s ease-in-out infinite reverse" })
+      ],
+      contact: [
+        mk({ top: "-240px", left: "32%", w: "640px", h: "640px", r: "45% 55% 50% 50%", color: lav, blur: "60px", anim: "auroraB 30s ease-in-out infinite" }),
+        mk({ bottom: "-100px", left: "-90px", w: "300px", h: "300px", r: "50%", color: mint, blur: "45px", anim: "auroraA 20s ease-in-out infinite reverse" })
+      ],
+      case: [
+        mk({ top: "-180px", right: "-150px", w: "520px", h: "520px", r: "55% 45% 50% 50%", color: azure, blur: "55px", anim: "auroraA 26s ease-in-out infinite reverse" }),
+        mk({ top: "55%", left: "-180px", w: "380px", h: "380px", r: "50%", color: lav, blur: "50px", anim: "auroraB 32s ease-in-out infinite" })
+      ]
+    };
+    return configs[page] || configs.home;
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────────
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function auroraHTML(page) {
+    return blobsFor(page).map(function (b) {
+      return '<div class="blob" style="top:' + b.top + ';left:' + b.left + ';right:' + b.right +
+        ';bottom:' + b.bottom + ';width:' + b.w + ';height:' + b.h + ';border-radius:' + b.r +
+        ';background:radial-gradient(ellipse at center,' + b.color + ',transparent 65%)' +
+        ';filter:blur(' + b.blur + ')"></div>';
+    }).join("");
+  }
+
+  function navHTML() {
+    var items = PAGES.map(function (p) {
+      var id = p[0], label = p[1];
+      var active = state.page === id || (id === "work" && state.page === "case");
+      var color = active ? "var(--text-primary)" : "var(--text-secondary)";
+      var bg = active ? "var(--pill-active-bg)" : "transparent";
+      return '<span class="nav-item" data-go="' + id + '" style="color:' + color + ';background:' + bg + '">' + esc(label) + '</span>';
+    }).join("");
+    var icon = state.theme === "light" ? "dark_mode" : "light_mode";
+    return '<div class="nav-wrap"><div class="nav-pill">' + items +
+      '<span class="material-symbols-rounded theme-btn" data-toggle-theme="1">' + icon + '</span></div></div>';
+  }
+
+  // ── Views ────────────────────────────────────────────────────────────
+  function homeHTML() {
+    return '<div class="view home-view"><div style="max-width:680px">' +
+      '<div class="eyebrow">UX &amp; Content Design</div>' +
+      '<div class="home-headline">One-line positioning statement: what Gina designs, for whom, and the feeling it leaves behind.</div>' +
+      '<div class="home-cta" data-go="work">' +
+        '<span style="font:var(--fw-medium) 15px var(--font-family)">View selected work</span>' +
+        '<span class="material-symbols-rounded" style="font-size:18px">arrow_forward</span>' +
+      '</div>' +
+      '</div></div>';
+  }
+
+  function workHTML() {
+    var cards = PROJECTS.map(function (p, i) {
+      return '<div class="work-card" data-open="' + i + '">' +
+        '<div class="work-cover">' + esc(p.cover) + '</div>' +
+        '<div class="work-title">' + esc(p.title) + '</div>' +
+        '<div class="work-line">' + esc(p.line) + '</div>' +
+      '</div>';
+    }).join("");
+    return '<div class="view view-pad">' +
+      '<div class="section-title" style="margin:24px 0 8px">Selected work</div>' +
+      '<div class="lede" style="margin-bottom:48px">One-sentence framing for the gallery: what kinds of problems these four case studies cover.</div>' +
+      '<div class="work-grid">' + cards + '</div>' +
+    '</div>';
+  }
+
+  function caseHTML() {
+    var facts = CASE_FACTS.map(function (f) {
+      return '<div><div class="fact-label">' + esc(f.label) + '</div><div class="fact-value">' + esc(f.value) + '</div></div>';
+    }).join("");
+    var title = TITLES[state.caseIdx] + " — full case study title, framed as the challenge";
+    return '<div class="view view-pad">' +
+      '<div class="case-back" data-go="work">' +
+        '<span class="material-symbols-rounded" style="font-size:16px">arrow_back</span>' +
+        '<span style="font:var(--fw-medium) 13px var(--font-family)">All work</span>' +
+      '</div>' +
+      '<div style="max-width:680px">' +
+        '<div class="case-title">' + esc(title) + '</div>' +
+        '<div class="case-sub">Subtitle: one sentence stating the outcome of the project — the "so what" up front.</div>' +
+      '</div>' +
+      '<div class="case-hero">Hero image — the final product in context, full width</div>' +
+      '<div class="case-facts">' + facts + '</div>' +
+      '<div class="case-body">' +
+        '<div><div class="case-h">The problem</div><div class="case-p">Paragraph describing the user and business problem — evidence it was worth solving, who was affected, what was at stake.</div></div>' +
+        '<div><div class="case-h">Approach</div><div class="case-p">Paragraph on process: research done, constraints, how UX and content design worked together, key decisions and trade-offs.</div>' +
+          '<div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px">' +
+            '<div class="media" style="height:220px">Process artifact — sketches, journey map, or content model</div>' +
+            '<div class="media" style="height:220px">Iteration — before/after or wireframe-to-final</div>' +
+          '</div></div>' +
+        '<div><div class="case-h">The solution</div><div class="case-p">Paragraph walking through what shipped — the key screens or flows, and the content decisions that made them work.</div>' +
+          '<div class="media" style="margin-top:24px;height:360px">Solution imagery — final screens, annotated if helpful</div></div>' +
+        '<div><div class="case-h">Outcome</div><div class="case-p">Paragraph on results: metrics moved, qualitative feedback, what was learned, what came next.</div></div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function aboutHTML() {
+    var chips = SKILLS.map(function (s) { return '<span class="chip">' + esc(s) + '</span>'; }).join("");
+    return '<div class="view view-pad"><div class="about-grid">' +
+      '<div style="display:flex;flex-direction:column;gap:20px">' +
+        '<div class="portrait">Portrait photo — natural light, unposed</div>' +
+        '<div class="caption">Caption: location, or a small human detail.</div>' +
+      '</div>' +
+      '<div style="max-width:560px">' +
+        '<div class="section-title" style="margin-bottom:24px">About</div>' +
+        '<div style="display:flex;flex-direction:column;gap:20px;font:400 15px/1.7 var(--font-family);color:var(--text-primary)">' +
+          '<div>Paragraph 1 — who Gina is: current role, years of practice, the intersection of UX and content design.</div>' +
+          '<div>Paragraph 2 — design philosophy: technology that recedes; clarity over decoration; language as interface.</div>' +
+          '<div>Paragraph 3 — background: how she got here, domains worked in, what she\'s drawn to next.</div>' +
+        '</div>' +
+        '<div style="margin-top:40px;border-top:1px solid var(--divider-default);padding-top:24px">' +
+          '<div style="font:400 12px var(--font-family);color:var(--text-secondary);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:16px">Practice</div>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:8px">' + chips + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div></div>';
+  }
+
+  function contactHTML() {
+    var body;
+    if (state.sent) {
+      body = '<div class="sent-card">' +
+        '<span class="material-symbols-rounded" style="font-size:36px;color:var(--success-main)">check_circle</span>' +
+        '<div style="margin-top:16px;font:var(--fw-semibold) 20px var(--font-family-headings);color:var(--text-display)">Message sent</div>' +
+        '<div style="margin-top:8px;font:400 14px/1.5 var(--font-family);color:var(--text-secondary)">Confirmation line: when Gina typically replies.</div>' +
+        '<div class="send-another" data-reset="1">Send another</div>' +
+      '</div>';
+    } else {
+      body = '<div style="display:flex;flex-direction:column;gap:24px">' +
+        '<div class="field"><label>Name</label><input data-field="name" value="' + esc(form.name) + '"></div>' +
+        '<div class="field"><label>Email</label><input data-field="email" value="' + esc(form.email) + '"></div>' +
+        '<div class="field"><label>Message</label><textarea data-field="msg" rows="5">' + esc(form.msg) + '</textarea></div>' +
+        '<div><button class="send-btn" data-submit="1">Send message</button></div>' +
+      '</div>';
+    }
+    return '<div class="view view-pad"><div style="max-width:520px;margin-top:24px">' +
+      '<div class="section-title" style="margin-bottom:8px">Contact</div>' +
+      '<div style="font:400 15px/1.5 var(--font-family);color:var(--text-secondary);margin-bottom:40px;text-wrap:pretty">One warm sentence inviting a conversation — projects, collaborations, or just to say hello.</div>' +
+      body +
+    '</div></div>';
+  }
+
+  function currentViewHTML() {
+    switch (state.page) {
+      case "work": return workHTML();
+      case "case": return caseHTML();
+      case "about": return aboutHTML();
+      case "contact": return contactHTML();
+      default: return homeHTML();
+    }
+  }
+
+  // ── Render ──────────────────────────────────────────────────────────
+  function render() {
+    var auroraOpacity = state.page === "home" ? 1 : 0.45;
+    var app = document.getElementById("app");
+    app.innerHTML =
+      '<div class="shell">' +
+        '<div class="aurora" style="opacity:' + auroraOpacity + '">' + auroraHTML(state.page) + '</div>' +
+        navHTML() +
+        currentViewHTML() +
+      '</div>';
+    wire();
+  }
+
+  // ── Event wiring (delegated per render) ──────────────────────────────
+  function wire() {
+    var app = document.getElementById("app");
+
+    app.querySelectorAll("[data-go]").forEach(function (el) {
+      el.addEventListener("click", function () { go(el.getAttribute("data-go")); });
+    });
+    app.querySelectorAll("[data-open]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        state.caseIdx = parseInt(el.getAttribute("data-open"), 10);
+        go("case");
+      });
+    });
+    var themeBtn = app.querySelector("[data-toggle-theme]");
+    if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
+
+    app.querySelectorAll("[data-field]").forEach(function (el) {
+      el.addEventListener("input", function () { form[el.getAttribute("data-field")] = el.value; });
+    });
+    var submitBtn = app.querySelector("[data-submit]");
+    if (submitBtn) submitBtn.addEventListener("click", function () { state.sent = true; render(); });
+    var resetBtn = app.querySelector("[data-reset]");
+    if (resetBtn) resetBtn.addEventListener("click", function () {
+      state.sent = false; form.name = ""; form.email = ""; form.msg = ""; render();
+    });
+  }
+
+  function go(page) {
+    state.page = page;
+    state.sent = false;
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  var themeTimer = null;
+  function applyTheme(animate) {
+    var root = document.documentElement;
+    if (animate) {
+      root.classList.add("theming");
+      if (themeTimer) window.clearTimeout(themeTimer);
+      themeTimer = window.setTimeout(function () { root.classList.remove("theming"); }, 2250);
+    }
+    root.setAttribute("data-theme", state.theme);
+    // The nav pill persists across the toggle, so update its icon in place
+    // rather than re-rendering (a re-render would restart the DOM and kill the fade).
+    var btn = document.querySelector(".theme-btn");
+    if (btn) btn.textContent = state.theme === "light" ? "dark_mode" : "light_mode";
+  }
+
+  function toggleTheme() {
+    state.theme = state.theme === "light" ? "dark" : "light";
+    try { localStorage.setItem("gina-theme", state.theme); } catch (e) {}
+    applyTheme(true);
+  }
+
+  // ── Init ───────────────────────────────────────────────────────────
+  var saved = null;
+  try { saved = localStorage.getItem("gina-theme"); } catch (e) {}
+  state.theme = saved || "light";
+  applyTheme(false); // set the theme with no animation on first load
+  render();
+})();
+</script>
+</body>
+</html>
