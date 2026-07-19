@@ -1,0 +1,56 @@
+/* ============================================================================
+   EFFECTS — the "atmosphere" layer: glass, glow, and aurora helper tokens
+   plus the aurora keyframes. These sit above the core token set (they're
+   app-flavour, not brand primitives) but are theme-aware.
+   ========================================================================== */
+
+:root {
+  --pill-bg:        rgba(255,255,255,0.6);
+  --pill-border:    rgba(0,0,0,0.06);
+  --pill-shadow:    0 4px 24px -8px rgba(0,0,0,0.08);
+  --pill-active-bg: rgba(0,0,0,0.06);
+  --glass-bg:       rgba(255,255,255,0.6);
+  --glass-border:   rgba(0,0,0,0.06);
+  --glow:           rgba(35,146,122,0.2);
+  --glow-strong:    rgba(2,77,240,0.45);
+  --glow-border:    rgba(35,146,122,0.3);
+  --aurora-mint:    rgba(87,217,186,0.22);
+  --aurora-lav:     rgba(169,123,239,0.16);
+  --aurora-azure:   rgba(70,184,255,0.15);
+}
+
+[data-theme="dark"] {
+  --pill-bg:        rgba(255,255,255,0.06);
+  --pill-border:    rgba(255,255,255,0.1);
+  --pill-shadow:    none;
+  --pill-active-bg: rgba(255,255,255,0.12);
+  --glass-bg:       rgba(255,255,255,0.05);
+  --glass-border:   rgba(255,255,255,0.1);
+  --glow:           rgba(127,245,218,0.15);
+  --glow-strong:    rgba(139,173,248,0.55);
+  --glow-border:    rgba(127,245,218,0.3);
+  --aurora-mint:    rgba(127,245,218,0.22);
+  --aurora-lav:     rgba(192,156,255,0.18);
+  --aurora-azure:   rgba(70,184,255,0.16);
+}
+
+/* Soft, slowly-drifting gradient blob. Position/size per instance inline. */
+.ds-aurora { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.ds-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+}
+
+@keyframes auroraA {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(30px, -20px) scale(1.08); }
+}
+@keyframes auroraB {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-24px, 24px) scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-blob { animation: none !important; }
+}

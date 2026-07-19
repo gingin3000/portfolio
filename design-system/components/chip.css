@@ -1,0 +1,29 @@
+/* ============================================================================
+   CHIP & BADGE — small pill labels.
+   .ds-chip           — neutral pill (from the portfolio's .chip).
+   .ds-badge--{role}  — status-tinted variants using container + on-container.
+   ========================================================================== */
+
+.ds-chip {
+  display: inline-flex;
+  align-items: center;
+  font: var(--fw-medium) 12px var(--font-family);
+  color: var(--neutral-on-container);
+  background: var(--neutral-container);
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+}
+
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: var(--fw-medium) 12px var(--font-family);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+.ds-badge--primary { background: var(--primary-container); color: var(--primary-on-container); }
+.ds-badge--success { background: var(--success-container); color: var(--success-on-container); }
+.ds-badge--error   { background: var(--error-container);   color: var(--error-on-container); }
+.ds-badge--warning { background: var(--warning-container);  color: var(--warning-main); }
+.ds-badge--info    { background: var(--info-container);     color: var(--info-main); }

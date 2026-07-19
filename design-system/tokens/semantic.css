@@ -1,0 +1,129 @@
+/* ============================================================================
+   SEMANTIC TOKENS — role-based aliases that components consume.
+   Every value points at a primitive. Swap a theme by remapping these, never
+   by touching components. Light is the default (:root); [data-theme="dark"]
+   overrides the roles that change.
+   ========================================================================== */
+
+:root {
+  /* ── Primary ───────────────────────────────────────────────────── */
+  --primary-main:                var(--blue-600);
+  --primary-light:               var(--blue-500);
+  --primary-dark:                var(--blue-800);
+  --primary-hover:               var(--blue-800);
+  --primary-hover-surface:       var(--blue-600-a12);
+  --primary-border-subtle:       var(--blue-500);
+  --primary-contrast-text:       var(--white);
+  --primary-container:           var(--blue-100);
+  --primary-container-hover:     var(--blue-300);
+  --primary-container-bold:      var(--blue-300);
+  --primary-container-bold-hover:var(--blue-400);
+  --primary-on-container:        var(--blue-900);
+
+  /* ── Secondary ─────────────────────────────────────────────────── */
+  --secondary-main:              var(--blue-200);
+  --secondary-contrast-text:     var(--blue-800);
+  --secondary-container:         var(--blue-50);
+  --secondary-on-container:      var(--blue-800);
+
+  /* ── Status: error / warning / info / success ──────────────────── */
+  --error-main:            var(--red-600);
+  --error-contrast-text:   var(--white);
+  --error-container:       var(--red-50);
+  --error-on-container:    var(--red-900);
+  --warning-main:          var(--orange-700);
+  --warning-container:     var(--orange-50);
+  --info-main:             var(--blue-700);
+  --info-container:        var(--blue-100);
+  --success-main:          var(--green-700);
+  --success-contrast-text: var(--white);
+  --success-container:     var(--green-50);
+  --success-on-container:  var(--green-900);
+
+  /* ── Neutral & promotional ─────────────────────────────────────── */
+  --neutral-main:            var(--grey-600);
+  --neutral-contrast-text:   var(--white);
+  --neutral-container:       var(--grey-100);
+  --neutral-on-container:    var(--grey-800);
+  --promotional-main:        var(--yellow-400);
+  --promotional-contrast-text: var(--grey-900);
+
+  /* ── Surfaces & backgrounds ────────────────────────────────────── */
+  --background-default:   var(--grey-50);
+  --background-highlight: var(--grey-150);
+  --surface-default:      var(--white);
+  --surface-inverse:      var(--grey-800);
+
+  /* ── Text ──────────────────────────────────────────────────────── */
+  --text-display:    var(--black);
+  --text-primary:    var(--grey-700);
+  --text-secondary:  var(--grey-600);
+  --text-disabled:   var(--grey-500);
+  --text-on-inverse: var(--grey-25);
+
+  /* ── Lines: dividers & outlines ────────────────────────────────── */
+  --divider-default:     var(--grey-150);
+  --divider-strong:      var(--grey-400);
+  --outline-default:     var(--grey-150);
+  --outline-strong:      var(--grey-500);
+  --outline-strong-hover:var(--grey-700);
+
+  /* ── Utility ───────────────────────────────────────────────────── */
+  --backdrop:          var(--scrim-a48);
+  --focus-ring-color:  var(--blue-600);
+  --focus-ring-width:  3px;
+  --focus-ring-offset: 2px;
+}
+
+[data-theme="dark"] {
+  --primary-main:            var(--blue-400);
+  --primary-light:           var(--blue-300);
+  --primary-dark:            var(--blue-600);
+  --primary-hover:           var(--blue-300);
+  --primary-contrast-text:   var(--black);
+  --primary-container:       var(--blue-900);
+  --primary-on-container:    var(--blue-300);
+
+  --secondary-main:          var(--grey-700);
+  --secondary-contrast-text: var(--white);
+  --secondary-container:     var(--grey-800);
+  --secondary-on-container:  var(--white);
+
+  --error-main:          var(--red-300);
+  --error-contrast-text: var(--black);
+  --error-container:     var(--red-900);
+  --error-on-container:  var(--red-200);
+  --warning-main:        var(--orange-300);
+  --warning-container:   var(--orange-900);
+  --info-main:           var(--blue-500);
+  --info-container:      var(--blue-900);
+  --success-main:        var(--green-400);
+  --success-contrast-text: var(--black);
+  --success-container:   var(--green-900);
+  --success-on-container:var(--green-200);
+
+  --neutral-main:          var(--grey-300);
+  --neutral-contrast-text: var(--black);
+  --neutral-container:     var(--grey-600);
+  --neutral-on-container:  var(--white);
+  --promotional-main:      var(--yellow-300);
+  --promotional-contrast-text: var(--black);
+
+  --background-default:   var(--grey-900);
+  --background-highlight: var(--grey-700);
+  --surface-default:      var(--grey-800);
+  --surface-inverse:      var(--grey-100);
+
+  --text-display:    var(--white);
+  --text-primary:    var(--grey-25);
+  --text-secondary:  var(--grey-300);
+  --text-disabled:   var(--grey-400);
+  --text-on-inverse: var(--grey-800);
+
+  --divider-default:     var(--grey-700);
+  --divider-strong:      var(--grey-700);
+  --outline-default:     var(--grey-600);
+  --outline-strong:      var(--grey-400);
+  --outline-strong-hover:var(--grey-150);
+  --focus-ring-color:    var(--blue-500);
+}

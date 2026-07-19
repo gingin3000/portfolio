@@ -1,0 +1,45 @@
+/* ============================================================================
+   NAV PILL — floating, glassy, centred navigation. From the portfolio's
+   .nav-pill / .nav-item / .theme-btn.
+   Usage:
+     <nav class="ds-nav">
+       <span class="ds-nav__item is-active">Home</span>
+       <span class="ds-nav__item">Work</span>
+       <span class="ds-icon ds-nav__toggle">dark_mode</span>
+     </nav>
+   ========================================================================== */
+
+.ds-nav {
+  display: inline-flex;
+  gap: var(--space-8);
+  align-items: center;
+  background: var(--pill-bg, rgba(255,255,255,0.6));
+  border: 1px solid var(--pill-border, rgba(0,0,0,0.06));
+  border-radius: var(--radius-full);
+  padding: 6px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--pill-shadow, 0 4px 24px -8px rgba(0,0,0,0.08));
+}
+.ds-nav__item {
+  font: var(--fw-medium) 13px var(--font-family);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: color 0.4s ease, background 0.4s ease, box-shadow 0.6s ease;
+  user-select: none;
+}
+.ds-nav__item:hover { color: var(--text-primary); box-shadow: 0 0 18px -2px var(--glow, rgba(35,146,122,0.2)); }
+.ds-nav__item.is-active { color: var(--text-primary); background: var(--pill-active-bg, rgba(0,0,0,0.06)); }
+
+.ds-nav__toggle {
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: color 0.4s ease, box-shadow 0.6s ease;
+}
+.ds-nav__toggle:hover { color: var(--text-primary); box-shadow: 0 0 18px -2px var(--glow, rgba(35,146,122,0.2)); }

@@ -1,0 +1,64 @@
+/* ============================================================================
+   PRIMITIVES — the raw, context-free palette.
+   These are the only place literal hex values live. Everything else in the
+   system references these via var(). Derived from the portfolio's tokens.css,
+   reorganised into tonal ramps.
+   Do not use primitives directly in components — use the semantic layer.
+   ========================================================================== */
+
+:root {
+  /* ── Blue (brand / primary family) ─────────────────────────────── */
+  --blue-50:  #F1F5FE;
+  --blue-100: #E6EDFE;
+  --blue-200: #D0DEFC;
+  --blue-300: #B1C8FA;
+  --blue-400: #8BADF8;
+  --blue-500: #7692FF;
+  --blue-600: #024DF0;   /* core brand */
+  --blue-700: #003EC7;
+  --blue-800: #002F9C;
+  --blue-900: #002073;
+
+  /* ── Red (error / danger) ──────────────────────────────────────── */
+  --red-50:  #FFE9E5;
+  --red-200: #FFCBC2;
+  --red-300: #FFA494;
+  --red-600: #B91000;
+  --red-900: #670500;
+
+  /* ── Orange (warning) ──────────────────────────────────────────── */
+  --orange-50:  #FFF1E9;
+  --orange-300: #FFA35A;
+  --orange-700: #884500;
+  --orange-900: #5B2D00;
+
+  /* ── Green (success) ───────────────────────────────────────────── */
+  --green-50:  #D3FFE1;
+  --green-200: #A7EDC5;
+  --green-400: #55CB8C;
+  --green-700: #00623A;
+  --green-900: #004326;
+
+  /* ── Yellow (promotional) ──────────────────────────────────────── */
+  --yellow-300: #FFE25E;
+  --yellow-400: #FFD200;
+
+  /* ── Neutral (greys) ───────────────────────────────────────────── */
+  --white:    #FFFFFF;
+  --grey-25:  #FBFCFD;
+  --grey-50:  #F6F8FA;
+  --grey-100: #EEF1F4;
+  --grey-150: #EAEDEF;
+  --grey-300: #BAC0C7;
+  --grey-400: #9CA2A9;
+  --grey-500: #6A7079;
+  --grey-600: #4A4F55;
+  --grey-700: #33363B;
+  --grey-800: #232529;
+  --grey-900: #141518;
+  --black:    #000000;
+
+  /* ── Alpha primitives (translucent, hue-carrying) ──────────────── */
+  --blue-600-a12: #024DF01F;   /* brand @ ~12% — hover surfaces */
+  --scrim-a48:    #1018287A;   /* backdrop / modal scrim */
+}

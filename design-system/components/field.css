@@ -1,0 +1,38 @@
+/* ============================================================================
+   FIELD — labelled text input / textarea. From the portfolio's .field.
+   Usage:
+     <div class="ds-field">
+       <label for="name">Name</label>
+       <input id="name" type="text">
+     </div>
+   ========================================================================== */
+
+.ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+.ds-field > label {
+  font: var(--type-label-md);
+  color: var(--text-primary);
+}
+.ds-field input,
+.ds-field textarea {
+  font: var(--fw-regular) 15px var(--font-family);
+  color: var(--text-primary);
+  background: var(--surface-default);
+  border: 1px solid var(--outline-default);
+  border-radius: var(--radius-8);
+  padding: 12px 16px;
+  outline: none;
+  box-shadow: var(--inset-shadow-field);
+  transition: border-color 0.2s ease;
+}
+.ds-field textarea { line-height: 1.5; resize: vertical; }
+.ds-field input:focus,
+.ds-field textarea:focus { border-color: var(--primary-main); }
+
+/* Error state — pair with an aria-describedby message. */
+.ds-field--error input,
+.ds-field--error textarea { border-color: var(--error-main); }
+.ds-field__error { font: var(--type-body-sm); color: var(--error-main); }
