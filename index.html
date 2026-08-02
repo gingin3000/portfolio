@@ -235,10 +235,13 @@
       emailLabel:   "Email",
       messageLabel: "Message",
       sendLabel:    "Send message",
-      // Shown after the form is submitted.
-      sentTitle:    "Message sent",
-      sentBody:     "Confirmation line: when Gina typically replies.",
-      sentAgain:    "Send another"
+      // Shown after the form is submitted (opens the visitor's email app).
+      sentTitle:    "Your email app is opening",
+      sentBody:     "Your message is drafted and ready — just hit send in your email app and it’ll reach me. I usually reply within a couple of days.",
+      sentAgain:    "Send another",
+      // Validation messages.
+      errMissing:   "Please fill in your name, email, and message.",
+      errEmail:     "Please enter a valid email address."
     }
   };
   // ═══════════════════════════════════════════════════════════════════════
@@ -246,8 +249,13 @@
   // ═══════════════════════════════════════════════════════════════════════
 
   // ── State ─────────────────────────────────────────────────────────────
-  var state = { page: "home", theme: "light", sent: false, caseIdx: 0 };
+  var state = { page: "home", theme: "light", sent: false, error: "", caseIdx: 0 };
   var form = { name: "", email: "", msg: "" };
+
+  // Contact address, assembled at runtime so it isn't in the raw HTML for scrapers.
+  var MAIL_USER = ["gini", "kay", "studio"].join("");
+  var MAIL_DOMAIN = ["gmail", "com"].join(".");
+  function contactAddress() { return MAIL_USER + String.fromCharCode(64) + MAIL_DOMAIN; }
 
   // ── Aurora blob geometry, per page (ported from blobsFor) ──────────────
   function blobsFor(page) {
@@ -408,8 +416,9 @@
     } else {
       body = '<div style="display:flex;flex-direction:column;gap:24px">' +
         '<div class="field"><label>' + esc(c.nameLabel) + '</label><input data-field="name" value="' + esc(form.name) + '"></div>' +
-        '<div class="field"><label>' + esc(c.emailLabel) + '</label><input data-field="email" value="' + esc(form.email) + '"></div>' +
+        '<div class="field"><label>' + esc(c.emailLabel) + '</label><input data-field="email" type="email" value="' + esc(form.email) + '"></div>' +
         '<div class="field"><label>' + esc(c.messageLabel) + '</label><textarea data-field="msg" rows="5">' + esc(form.msg) + '</textarea></div>' +
+        (state.error ? '<div style="font:400 14px/1.5 var(--font-family);color:var(--error-main,#d64545)">' + esc(state.error) + '</div>' : '') +
         '<div><button class="send-btn" data-submit="1">' + esc(c.sendLabel) + '</button></div>' +
       '</div>';
     }
@@ -463,16 +472,45 @@
       el.addEventListener("input", function () { form[el.getAttribute("data-field")] = el.value; });
     });
     var submitBtn = app.querySelector("[data-submit]");
-    if (submitBtn) submitBtn.addEventListener("click", function () { state.sent = true; render(); });
+    if (submitBtn) submitBtn.addEventListener("click", submitContact);
     var resetBtn = app.querySelector("[data-reset]");
     if (resetBtn) resetBtn.addEventListener("click", function () {
-      state.sent = false; form.name = ""; form.email = ""; form.msg = ""; render();
+      state.sent = false; state.error = ""; form.name = ""; form.email = ""; form.msg = ""; render();
     });
+  }
+
+  // Opens the visitor's email app with a message pre-drafted to the contact address.
+  function submitContact() {
+    var c = CONTENT.contact;
+    var name = form.name.trim();
+    var email = form.email.trim();
+    var msg = form.msg.trim();
+    if (!name || !email || !msg) {
+      state.error = c.errMissing;
+      render();
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      state.error = c.errEmail;
+      render();
+      return;
+    }
+
+    var subject = "Portfolio enquiry from " + name;
+    var lines = msg + "\n\n—\nFrom: " + name + " (" + email + ")";
+    window.location.href = "mailto:" + contactAddress() +
+      "?subject=" + encodeURIComponent(subject) +
+      "&body=" + encodeURIComponent(lines);
+
+    state.error = "";
+    state.sent = true;
+    render();
   }
 
   function go(page) {
     state.page = page;
     state.sent = false;
+    state.error = "";
     render();
     window.scrollTo(0, 0);
   }
