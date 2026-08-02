@@ -225,7 +225,9 @@
         "Paragraph 3 — background: how she got here, domains worked in, what she's drawn to next."
       ],
       skillsHeading: "Practice",
-      skills: ["Skill or method 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5", "Skill 6"]
+      skills: ["Skill or method 1", "Skill 2", "Skill 3", "Skill 4", "Skill 5", "Skill 6"],
+      toolsHeading: "Tools",
+      tools: ["Tool 1", "Tool 2", "Tool 3", "Tool 4", "Tool 5", "Tool 6"]
     },
 
     // ── CONTACT page ───────────────────────────────────────────────
@@ -384,6 +386,7 @@
     var a = CONTENT.about;
     var paras = a.paragraphs.map(function (p) { return '<div>' + esc(p) + '</div>'; }).join("");
     var chips = a.skills.map(function (s) { return '<span class="chip">' + esc(s) + '</span>'; }).join("");
+    var toolChips = a.tools.map(function (s) { return '<span class="chip">' + esc(s) + '</span>'; }).join("");
     return '<div class="view view-pad"><div class="about-grid">' +
       '<div style="display:flex;flex-direction:column;gap:20px">' +
         '<div class="portrait">' + esc(a.portrait) + '</div>' +
@@ -397,6 +400,10 @@
         '<div style="margin-top:40px;border-top:1px solid var(--divider-default);padding-top:24px">' +
           '<div style="font:400 12px var(--font-family);color:var(--text-secondary);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:16px">' + esc(a.skillsHeading) + '</div>' +
           '<div style="display:flex;flex-wrap:wrap;gap:8px">' + chips + '</div>' +
+        '</div>' +
+        '<div style="margin-top:40px;border-top:1px solid var(--divider-default);padding-top:24px">' +
+          '<div style="font:400 12px var(--font-family);color:var(--text-secondary);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:16px">' + esc(a.toolsHeading) + '</div>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:8px">' + toolChips + '</div>' +
         '</div>' +
       '</div>' +
     '</div></div>';
