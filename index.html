@@ -492,12 +492,45 @@
     render();
   }
 
-  function go(page) {
-    state.page = page;
+  // ── Hash routing ─────────────────────────────────────────────────────
+  // The URL hash is the source of truth for the current page, so links are
+  // shareable, refresh keeps you in place, and the browser Back/Forward
+  // buttons move between tabs. Home = no hash; a case study = "#case-<n>".
+  var ROUTES = { home: 1, work: 1, about: 1, contact: 1 };
+
+  function pageHash(page) {
+    if (page === "home") return "";
+    if (page === "case") return "#case-" + state.caseIdx;
+    return "#" + page;
+  }
+
+  // Read the current hash and render the matching page.
+  function applyHash() {
+    var h = window.location.hash.replace(/^#/, "");
     state.sent = false;
+    var m = h.match(/^case-(\d+)$/);
+    if (m && parseInt(m[1], 10) < CONTENT.work.projects.length) {
+      state.caseIdx = parseInt(m[1], 10);
+      state.page = "case";
+    } else if (h && ROUTES[h]) {
+      state.page = h;
+    } else {
+      state.page = "home";
+    }
     render();
     window.scrollTo(0, 0);
   }
+
+  function go(page) {
+    var target = pageHash(page);
+    if (window.location.hash === target) {
+      applyHash(); // hash unchanged (e.g. re-click current tab) — render directly
+    } else {
+      window.location.hash = target; // fires "hashchange" -> applyHash
+    }
+  }
+
+  window.addEventListener("hashchange", applyHash);
 
   var themeTimer = null;
   function applyTheme(animate) {
@@ -526,7 +559,7 @@
   try { saved = localStorage.getItem("gina-theme"); } catch (e) {}
   state.theme = saved || "light";
   applyTheme(false); // set the theme with no animation on first load
-  render();
+  applyHash();       // render the page named in the URL hash (or home)
 })();
 </script>
 </body>
