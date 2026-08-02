@@ -113,6 +113,10 @@
   .field input:focus, .field textarea:focus { border-color: var(--primary-main); }
   .send-btn { font: var(--fw-medium) var(--type-button-md-font-size) var(--font-family); letter-spacing: 0.025em; color: var(--primary-contrast-text); background: var(--primary-main); border: none; border-radius: var(--radius-full); padding: 12px 28px; cursor: pointer; transition: box-shadow 0.6s ease; }
   .send-btn:hover { box-shadow: 0 0 32px -4px var(--glow-strong); }
+  .contact-actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .linkedin-btn { display: inline-flex; align-items: center; gap: 8px; font: var(--fw-medium) var(--type-button-md-font-size) var(--font-family); letter-spacing: 0.025em; color: var(--text-primary); background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-full); padding: 11px 24px; cursor: pointer; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: box-shadow 0.6s ease, border-color 0.6s ease; }
+  .linkedin-btn:hover { color: var(--text-primary); box-shadow: 0 0 24px -6px var(--glow); border-color: var(--glow-border); }
+  .linkedin-btn svg { display: block; }
   .sent-card { background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: var(--radius-12); padding: 40px; text-align: center; }
   .send-another { margin-top: 24px; display: inline-block; font: var(--fw-medium) 13px var(--font-family); color: var(--primary-main); cursor: pointer; transition: text-shadow 0.6s ease; }
   .send-another:hover { text-shadow: 0 0 16px var(--glow-strong); }
@@ -232,6 +236,8 @@
       title:        "Contact",
       intro:        "One warm sentence inviting a conversation — projects, collaborations, or just to say hello.",
       ctaLabel:     "Email me",
+      linkedinLabel:"Message me on",   // followed by the inline LinkedIn logo
+      linkedinUrl:  "https://www.linkedin.com/in/gina-kliche-4a885896/",
       // Shown after the button is clicked (their email app opens).
       sentTitle:    "Your email app is opening",
       sentBody:     "A fresh message to me should be opening now. Say hello — I usually reply within a couple of days.",
@@ -250,6 +256,13 @@
   var MAIL_USER = ["gini", "kay", "studio"].join("");
   var MAIL_DOMAIN = ["gmail", "com"].join(".");
   function contactAddress() { return MAIL_USER + String.fromCharCode(64) + MAIL_DOMAIN; }
+
+  // Inline LinkedIn brand mark (replaces the word "LinkedIn" in the button).
+  var LINKEDIN_LOGO =
+    '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      '<rect width="24" height="24" rx="4" fill="#0A66C2"></rect>' +
+      '<path fill="#fff" d="M4.34 8.9h2.62V19H4.34V8.9zM5.65 4.2a1.52 1.52 0 110 3.04 1.52 1.52 0 010-3.04zM9.06 8.9h2.51v1.38h.04c.35-.66 1.2-1.36 2.48-1.36 2.65 0 3.14 1.74 3.14 4.01V19h-2.62v-4.98c0-1.19-.02-2.72-1.66-2.72-1.66 0-1.91 1.3-1.91 2.64V19H9.06V8.9z"></path>' +
+    '</svg>';
 
   // ── Aurora blob geometry, per page (ported from blobsFor) ──────────────
   function blobsFor(page) {
@@ -410,7 +423,12 @@
         '<div class="send-another" data-reset="1">' + esc(c.sentAgain) + '</div>' +
       '</div>';
     } else {
-      body = '<div><button class="send-btn" data-email="1">' + esc(c.ctaLabel) + '</button></div>';
+      body = '<div class="contact-actions">' +
+        '<button class="send-btn" data-email="1">' + esc(c.ctaLabel) + '</button>' +
+        '<a class="linkedin-btn" href="' + esc(c.linkedinUrl) + '" target="_blank" rel="noopener noreferrer" aria-label="' + esc(c.linkedinLabel) + ' LinkedIn">' +
+          esc(c.linkedinLabel) + ' ' + LINKEDIN_LOGO +
+        '</a>' +
+      '</div>';
     }
     return '<div class="view view-pad"><div style="max-width:520px;margin-top:24px">' +
       '<div class="section-title" style="margin-bottom:8px">' + esc(c.title) + '</div>' +
