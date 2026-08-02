@@ -103,6 +103,8 @@
 
   .about-grid { display: grid; grid-template-columns: 320px 1fr; gap: 64px; margin-top: 24px; }
   .portrait { width: 100%; aspect-ratio: 4/5; border-radius: var(--radius-12); background: var(--surface-default); border: 1px dashed var(--outline-strong); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font: 400 12px/1.5 var(--font-family); color: var(--text-secondary); }
+  .portrait.has-img { padding: 0; border: none; overflow: hidden; }
+  .portrait.has-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
   .caption { font: 400 12px/1.5 var(--font-family); color: var(--text-disabled); }
   .chip { font: var(--fw-medium) 12px var(--font-family); color: var(--neutral-on-container); background: var(--neutral-container); padding: 5px 12px; border-radius: var(--radius-full); }
 
@@ -217,7 +219,8 @@
     about: {
       title:           "About",
       portrait:        "Portrait photo — natural light, unposed",
-      portraitCaption: "Portrait photo coming soon – until then, let me introduce you to badass 80s design icon Susan Kare.",
+      portraitImage:   "images/about.jpg", // path to the photo; leave "" to show the placeholder box
+      portraitCaption: "Portrait photo coming soon – until then, welcome to my dream office. The truth is out there.",
       // Each string is one paragraph.
       paragraphs: [
         "I help teams bring order into chaos. By asking the right questions, providing data and design direction, I make sure we build products that work.",
@@ -389,7 +392,9 @@
     var toolChips = a.tools.map(function (s) { return '<span class="chip">' + esc(s) + '</span>'; }).join("");
     return '<div class="view view-pad"><div class="about-grid">' +
       '<div style="display:flex;flex-direction:column;gap:20px">' +
-        '<div class="portrait">' + esc(a.portrait) + '</div>' +
+        (a.portraitImage
+          ? '<div class="portrait has-img"><img src="' + esc(a.portraitImage) + '" alt="' + esc(a.portrait) + '"></div>'
+          : '<div class="portrait">' + esc(a.portrait) + '</div>') +
         '<div class="caption">' + esc(a.portraitCaption) + '</div>' +
       '</div>' +
       '<div style="max-width:560px">' +
