@@ -169,50 +169,180 @@
       ctaLabel: "View work samples"
     },
 
-    // ── WORK page (the project gallery) ────────────────────────────
+    // ── WORK page (the project gallery) + CASE STUDIES ─────────────
+    // Each entry in "projects" is BOTH a card in the gallery AND its own
+    // case-study page. Clicking a card opens that project's "caseStudy" block.
+    // To add or remove a project, copy or delete a whole { ... } entry.
     work: {
-      title: "Work samples",
-      intro: "Check out these case studies to get an idea of my approach to content design projects.",
-      // One entry per card. Add or delete an entry to change the number of cards.
-      projects: [
-        { title: "Project one — b2c account & app",   meta: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
-        { title: "Project two — b2b freemium membership",   meta: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
-        { title: "Project three — new website build (iTech)", meta: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" },
-        { title: "Project four — ad-hoc UX support (small changes)",  meta: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" }
-        { title: "Project five — content & design system",  meta: "Role · one-line description of the problem", cover: "Cover image — one key screen or artifact" }
-      ]
-    },
+      title:     "Work samples",
+      intro:     "Check out these case studies to get an idea of my approach to content design projects.",
+      backLabel: "All work",   // the "back" link shown on every case-study page
 
-    // ── CASE STUDY page (opens when a project card is clicked) ──────
-    // One template serves every project. The heading is the clicked project's
-    // "title" (above) with "titleSuffix" appended.
-    caseStudy: {
-      titleSuffix: " — full case study title, framed as the challenge",
-      subtitle:    'Subtitle: one sentence stating the outcome of the project — the "so what" up front.',
-      backLabel:   "All work",
-      hero:        "Hero image — the final product in context, full width",
-      // The four facts in the row under the hero image.
-      facts: [
-        { label: "Role",     value: "Your role on the project" },
-        { label: "Timeline", value: "Duration and year" },
-        { label: "Team",     value: "Who you worked with" },
-        { label: "Platform", value: "Web, mobile, etc." }
-      ],
-      // Body sections, in order. "media" holds the caption(s) for grey image
-      // placeholders: [] = none, one caption = one wide box, two = a side-by-side pair.
-      sections: [
-        { heading: "The problem",
-          body: "Paragraph describing the user and business problem — evidence it was worth solving, who was affected, what was at stake.",
-          media: [] },
-        { heading: "Approach",
-          body: "Paragraph on process: research done, constraints, how UX and content design worked together, key decisions and trade-offs.",
-          media: ["Process artifact — sketches, journey map, or content model", "Iteration — before/after or wireframe-to-final"] },
-        { heading: "The solution",
-          body: "Paragraph walking through what shipped — the key screens or flows, and the content decisions that made them work.",
-          media: ["Solution imagery — final screens, annotated if helpful"] },
-        { heading: "Outcome",
-          body: "Paragraph on results: metrics moved, qualitative feedback, what was learned, what came next.",
-          media: [] }
+      projects: [
+
+        // ── PROJECT 1 ──────────────────────────────────────────────
+        {
+          // Gallery card
+          title: "Project one — b2c account & app",
+          meta:  "Role · one-line description of the problem",
+          cover: "Cover image — one key screen or artifact",
+          // Case-study page (opens when this card is clicked)
+          caseStudy: {
+            titleSuffix: " — full case study title, framed as the challenge",
+            subtitle:    'Subtitle: one sentence stating the outcome — the "so what" up front.',
+            hero:        "Hero image — the final product in context, full width",
+            facts: [
+              { label: "Role",     value: "Your role on the project" },
+              { label: "Timeline", value: "Duration and year" },
+              { label: "Team",     value: "Who you worked with" },
+              { label: "Platform", value: "Web, mobile, etc." }
+            ],
+            // "media": [] = no image, one caption = one wide box, two = side-by-side pair.
+            sections: [
+              { heading: "The problem",
+                body: "Paragraph describing the user and business problem — evidence it was worth solving, who was affected, what was at stake.",
+                media: [] },
+              { heading: "Approach",
+                body: "Paragraph on process: research done, constraints, how UX and content design worked together, key decisions and trade-offs.",
+                media: ["Process artifact — sketches, journey map, or content model", "Iteration — before/after or wireframe-to-final"] },
+              { heading: "The solution",
+                body: "Paragraph walking through what shipped — the key screens or flows, and the content decisions that made them work.",
+                media: ["Solution imagery — final screens, annotated if helpful"] },
+              { heading: "Outcome",
+                body: "Paragraph on results: metrics moved, qualitative feedback, what was learned, what came next.",
+                media: [] }
+            ]
+          }
+        },
+
+        // ── PROJECT 2 ──────────────────────────────────────────────
+        {
+          title: "Project two — b2b freemium membership",
+          meta:  "Role · one-line description of the problem",
+          cover: "Cover image — one key screen or artifact",
+          caseStudy: {
+            titleSuffix: " — full case study title, framed as the challenge",
+            subtitle:    'Subtitle: one sentence stating the outcome — the "so what" up front.',
+            hero:        "Hero image — the final product in context, full width",
+            facts: [
+              { label: "Role",     value: "Your role on the project" },
+              { label: "Timeline", value: "Duration and year" },
+              { label: "Team",     value: "Who you worked with" },
+              { label: "Platform", value: "Web, mobile, etc." }
+            ],
+            sections: [
+              { heading: "The problem",
+                body: "Paragraph describing the user and business problem — evidence it was worth solving, who was affected, what was at stake.",
+                media: [] },
+              { heading: "Approach",
+                body: "Paragraph on process: research done, constraints, how UX and content design worked together, key decisions and trade-offs.",
+                media: ["Process artifact — sketches, journey map, or content model", "Iteration — before/after or wireframe-to-final"] },
+              { heading: "The solution",
+                body: "Paragraph walking through what shipped — the key screens or flows, and the content decisions that made them work.",
+                media: ["Solution imagery — final screens, annotated if helpful"] },
+              { heading: "Outcome",
+                body: "Paragraph on results: metrics moved, qualitative feedback, what was learned, what came next.",
+                media: [] }
+            ]
+          }
+        },
+
+        // ── PROJECT 3 ──────────────────────────────────────────────
+        {
+          title: "Project three — new website build (iTech)",
+          meta:  "Role · one-line description of the problem",
+          cover: "Cover image — one key screen or artifact",
+          caseStudy: {
+            titleSuffix: " — full case study title, framed as the challenge",
+            subtitle:    'Subtitle: one sentence stating the outcome — the "so what" up front.',
+            hero:        "Hero image — the final product in context, full width",
+            facts: [
+              { label: "Role",     value: "Your role on the project" },
+              { label: "Timeline", value: "Duration and year" },
+              { label: "Team",     value: "Who you worked with" },
+              { label: "Platform", value: "Web, mobile, etc." }
+            ],
+            sections: [
+              { heading: "The problem",
+                body: "Paragraph describing the user and business problem — evidence it was worth solving, who was affected, what was at stake.",
+                media: [] },
+              { heading: "Approach",
+                body: "Paragraph on process: research done, constraints, how UX and content design worked together, key decisions and trade-offs.",
+                media: ["Process artifact — sketches, journey map, or content model", "Iteration — before/after or wireframe-to-final"] },
+              { heading: "The solution",
+                body: "Paragraph walking through what shipped — the key screens or flows, and the content decisions that made them work.",
+                media: ["Solution imagery — final screens, annotated if helpful"] },
+              { heading: "Outcome",
+                body: "Paragraph on results: metrics moved, qualitative feedback, what was learned, what came next.",
+                media: [] }
+            ]
+          }
+        },
+
+        // ── PROJECT 4 ──────────────────────────────────────────────
+        {
+          title: "Project four — ad-hoc UX support (small changes)",
+          meta:  "Role · one-line description of the problem",
+          cover: "Cover image — one key screen or artifact",
+          caseStudy: {
+            titleSuffix: " — full case study title, framed as the challenge",
+            subtitle:    'Subtitle: one sentence stating the outcome — the "so what" up front.',
+            hero:        "Hero image — the final product in context, full width",
+            facts: [
+              { label: "Role",     value: "Your role on the project" },
+              { label: "Timeline", value: "Duration and year" },
+              { label: "Team",     value: "Who you worked with" },
+              { label: "Platform", value: "Web, mobile, etc." }
+            ],
+            sections: [
+              { heading: "The problem",
+                body: "Paragraph describing the user and business problem — evidence it was worth solving, who was affected, what was at stake.",
+                media: [] },
+              { heading: "Approach",
+                body: "Paragraph on process: research done, constraints, how UX and content design worked together, key decisions and trade-offs.",
+                media: ["Process artifact — sketches, journey map, or content model", "Iteration — before/after or wireframe-to-final"] },
+              { heading: "The solution",
+                body: "Paragraph walking through what shipped — the key screens or flows, and the content decisions that made them work.",
+                media: ["Solution imagery — final screens, annotated if helpful"] },
+              { heading: "Outcome",
+                body: "Paragraph on results: metrics moved, qualitative feedback, what was learned, what came next.",
+                media: [] }
+            ]
+          }
+        },
+
+        // ── PROJECT 5 ──────────────────────────────────────────────
+        {
+          title: "Project five — content & design system",
+          meta:  "Role · one-line description of the problem",
+          cover: "Cover image — one key screen or artifact",
+          caseStudy: {
+            titleSuffix: " — full case study title, framed as the challenge",
+            subtitle:    'Subtitle: one sentence stating the outcome — the "so what" up front.',
+            hero:        "Hero image — the final product in context, full width",
+            facts: [
+              { label: "Role",     value: "Your role on the project" },
+              { label: "Timeline", value: "Duration and year" },
+              { label: "Team",     value: "Who you worked with" },
+              { label: "Platform", value: "Web, mobile, etc." }
+            ],
+            sections: [
+              { heading: "The problem",
+                body: "Paragraph describing the user and business problem — evidence it was worth solving, who was affected, what was at stake.",
+                media: [] },
+              { heading: "Approach",
+                body: "Paragraph on process: research done, constraints, how UX and content design worked together, key decisions and trade-offs.",
+                media: ["Process artifact — sketches, journey map, or content model", "Iteration — before/after or wireframe-to-final"] },
+              { heading: "The solution",
+                body: "Paragraph walking through what shipped — the key screens or flows, and the content decisions that made them work.",
+                media: ["Solution imagery — final screens, annotated if helpful"] },
+              { heading: "Outcome",
+                body: "Paragraph on results: metrics moved, qualitative feedback, what was learned, what came next.",
+                media: [] }
+            ]
+          }
+        }
+
       ]
     },
 
@@ -353,8 +483,8 @@
   }
 
   function caseHTML() {
-    var cs = CONTENT.caseStudy;
     var proj = CONTENT.work.projects[state.caseIdx] || CONTENT.work.projects[0];
+    var cs = proj.caseStudy;
     var facts = cs.facts.map(function (f) {
       return '<div><div class="fact-label">' + esc(f.label) + '</div><div class="fact-value">' + esc(f.value) + '</div></div>';
     }).join("");
@@ -374,7 +504,7 @@
     return '<div class="view view-pad">' +
       '<div class="case-back" data-go="work">' +
         '<span class="ds-icon" style="font-size:16px">arrow_back</span>' +
-        '<span style="font:var(--fw-medium) 13px var(--font-family)">' + esc(cs.backLabel) + '</span>' +
+        '<span style="font:var(--fw-medium) 13px var(--font-family)">' + esc(CONTENT.work.backLabel) + '</span>' +
       '</div>' +
       '<div style="max-width:680px">' +
         '<div class="case-title">' + title + '</div>' +
